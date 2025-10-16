@@ -1,9 +1,9 @@
-﻿# AHKstrategies — Project
+# AHKStrategies — Project
 
 Status: ![CI](https://github.com/ahkstrategies/dns-setup/actions/workflows/e2e.yml/badge.svg)
 
 Quickstart
----------
+----------
 
 Prerequisites: Node 20+, npm, and (optionally) PowerShell on Windows.
 
@@ -26,8 +26,8 @@ npm run start:server
 npm test
 ```
 
-Detached server
----------------
+Detached server (Windows)
+-------------------------
 
 On Windows you can run the provided helper:
 
@@ -37,9 +37,9 @@ npm run start:detached
 ```
 
 Run E2E locally via Node runner
---------------------------------
+------------------------------
 
-This project includes a small Node runner that starts the server, waits for `/health`, runs Cypress, and stops the server. Use:
+This project includes a small Node runner that starts the server, waits for `/health`, runs Cypress, and stops the server.
 
 ```powershell
 npm run e2e
@@ -48,41 +48,33 @@ npm run e2e
 CI (GitHub Actions)
 --------------------
 
-The workflow `.github/workflows/e2e.yml` runs on push and pull_request to `master`, on Ubuntu and Windows, using Node 20. It runs `npm ci` and `npm run e2e`.
+The workflow is in `.github/workflows/e2e.yml` and runs on push and pull_request. It starts the server, runs the Cypress E2E and accessibility checks, and uploads results.
 
 Troubleshooting
 ---------------
 
 - Port in use: If port 8080 is already used, either stop the process holding it or set `PORT` to another port and run the server with that env var (update the Cypress baseUrl accordingly).
-- Remote push: this environment cannot push to remote repos; commit locally and push from a developer machine with proper credentials.
+- Remote push: if you see remote errors, ensure the remote repo exists under your account and you have correct auth (SSH key or HTTPS credentials).
 
 Patches
 -------
 
-This repository keeps a canonical patch for distribution in `patches/`. The current canonical patch is:
+This repository keeps a canonical patch for distribution in `patches/` when appropriate.
 
-```
-patches/0001-chore-ci-add-GitHub-Actions-e2e-workflow-Node-e2e-ru.patch
-```
+License / Notes
+---------------
 
-CI Badge
---------
+This project is a small single-file SPA with an Express server for local testing and CI-driven Cypress E2E. Use the `scripts/` helpers to run the server and tests on Windows and CI.
+# AHKStrategies — Project
 
-The badge at the top of this README points at the expected workflow — update the repo owner/name in the badge URL if you move the project to a different remote.
-# AHKstrategies project
+Status: ![CI](https://github.com/ahkstrategies/dns-setup/actions/workflows/e2e.yml/badge.svg)
 
-Quick start:
+Quickstart
+---------
 
-1) Install dependencies
-   npm install
+Prerequisites: Node 20+, npm, and (optionally) PowerShell on Windows.
 
-2) Install Cypress browser binaries (optional, cypress will do this on first run):
-   npx cypress install
+1. Install dependencies
 
-3) Start the server in one terminal:
-   npm run start:server
-
-4) Run tests in another terminal:
-   npm test
-
-The server serves the static site and accepts POST /submit which writes to submissions/.
+```powershell
+npm ci
