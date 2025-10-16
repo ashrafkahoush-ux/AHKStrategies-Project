@@ -43,6 +43,18 @@
       .immersive canvas{position:absolute;inset:0;width:100%;height:100%;}
       .immersive .content{position:relative;z-index:6;padding:24px}
 
+  /* Motion helpers */
+  .fade-in-up{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.2,1)}
+  .is-visible{opacity:1;transform:none}
+  .logo-pulse{animation:logoPulse 2.6s ease-in-out infinite}
+  @keyframes logoPulse{0%{transform:scale(1)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
+  .pill-hover{transition:transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s ease}
+  .pill-click-ripple{position:absolute;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);mix-blend-mode:screen}
+  .cta{transition:transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s ease}
+  .cta:hover{transform:scale(1.03)}
+  /* neon cursor */
+  #neon-cursor{position:fixed;left:0;top:0;width:24px;height:24px;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%) scale(0.8);box-shadow:0 8px 30px rgba(96,165,250,0.14);mix-blend-mode:screen;transition:width .12s ease,height .12s ease,transform .12s ease,box-shadow .12s ease;z-index:9999}
+
       .page-content{opacity:0;transform:translateY(6px);transition:opacity .28s ease, transform .28s ease}
       .page-content.active-page{opacity:1;transform:none}
 
@@ -82,8 +94,10 @@
             <div class="left">
               <h1 id="hero-title" class="title">The Six Strategic Dimensions</h1>
               <p class="lead">Turn complexity into clarity — at scale. Explore our immersive pillars that fuse strategy, AI, and regional expertise into outcomes that move markets.</p>
+                <h1 id="hero-title" class="title fade-in-up">The Six Strategic Dimensions</h1>
+                <p class="lead fade-in-up">Turn complexity into clarity — at scale. Explore our immersive pillars that fuse strategy, AI, and regional expertise into outcomes that move markets.</p>
               <div class="pillars" role="list">
-                <article class="pillar" role="listitem" data-pillar="cognitive">
+                  <article class="pillar fade-in-up" role="listitem" data-pillar="cognitive">
                   <h3>1. Cognitive Intelligence Integration</h3>
                   <p>We build AI systems that anticipate and adapt — turning real-time data into actionable foresight.</p>
                 </article>
@@ -114,7 +128,7 @@
               <canvas id="heroCanvas"></canvas>
               <div class="content">
                 <div style="display:flex;gap:12px;align-items:center">
-                  <div style="width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#04102b">6</div>
+                    <div style="width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#04102b" class="fade-in-up logo-pulse">6</div>
                   <div>
                     <div style="font-weight:700">The Orbit Framework™</div>
                     <div style="color:var(--muted);font-size:14px">One core. Infinite momentum.</div>
@@ -124,6 +138,7 @@
             </div>
           </div>
         </section>
+      <script src="scripts/motion_and_sound.js"></script>
 
         <!-- Pillar detail sections (each immersive and interactive) -->
         <section id="page-home" class="page-content active-page">
