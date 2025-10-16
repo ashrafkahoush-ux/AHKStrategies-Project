@@ -55,6 +55,20 @@ Troubleshooting
 
 - Port in use: If port 8080 is already used, either stop the process holding it or set `PORT` to another port and run the server with that env var (update the Cypress baseUrl accordingly).
 - Remote push: this environment cannot push to remote repos; commit locally and push from a developer machine with proper credentials.
+
+Patches
+-------
+
+This repository keeps a canonical patch for distribution in `patches/`. The current canonical patch is:
+
+```
+patches/0001-chore-ci-add-GitHub-Actions-e2e-workflow-Node-e2e-ru.patch
+```
+
+CI Badge
+--------
+
+The badge at the top of this README points at the expected workflow — update the repo owner/name in the badge URL if you move the project to a different remote.
 # AHKstrategies project
 
 Quick start:

@@ -25,10 +25,38 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run e2e tests
+      - name: Cache npm (Linux/Mac)
+        if: runner.os != 'Windows'
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Cache npm (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.USERPROFILE }}\\AppData\\Roaming\\npm-cache
+          key: windows-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            windows-node-
+
+      - name: Run e2e tests (Linux/macOS)
+        if: runner.os != 'Windows'
         env:
           PORT: 8080
         run: |
+          npm run e2e
+
+      - name: Run e2e tests (Windows - PowerShell)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          PORT: 8080
+        run: |
+          # On Windows use PowerShell for clearer process handling
           npm run e2e
 
       - name: Upload Cypress artifacts
