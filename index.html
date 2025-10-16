@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AHKstrategies | Strategic Growth Engine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--color-graphite:#1a1a1a;--color-blue:#3b82f6;--color-blue-accent:#60a5fa}
+    body{font-family:Poppins, sans-serif;background:var(--color-graphite);color:#e5e5e5}
+    .sidebar{width:250px;position:fixed;left:0;top:0;bottom:0;padding:2rem;background:var(--color-graphite)}
+    .main-content{margin-left:250px;padding:2rem}
+    .page-content{opacity:0;transition:opacity .25s ease}
+    .page-content.active-page{opacity:1}
+    .hidden{display:none}
+    .nav-item.active{color:var(--color-blue-accent);border-left:4px solid var(--color-blue);padding-left:1.5rem}
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="sr-only">Skip to content</a>
+  <button id="menu-toggle" class="lg:hidden">Menu</button>
+
+  <nav id="sidebar" class="sidebar" role="navigation" aria-label="Primary navigation">
+    <div class="text-3xl font-bold mb-10">AHK<span style="color:var(--color-blue)">strategies</span></div>
+    <ul>
+      <li class="nav-item" data-page="home">Home</li>
+      <li class="nav-item" data-page="about">About</li>
+      <li class="nav-item" data-page="automotive">Automotive</li>
+      <li class="nav-item" data-page="energy">Energy</li>
+      <li class="nav-item" data-page="investments">Investments</li>
+      <li class="nav-item" data-page="insights">Insights</li>
+      <li class="nav-item" data-page="contact">Contact</li>
+    </ul>
+  </nav>
+
+  <main id="main-content" class="main-content" role="main">
+    <section id="page-home" class="page-content">
+      <h1>Strategic Growth Engine</h1>
+      <p>for Mobility, Energy, and Investment.</p>
+    </section>
+
+    <section id="page-about" class="page-content hidden">
+      <h2>About AHKstrategies</h2>
+      <p>28+ years of experience in the MENA region.</p>
+    </section>
+
+    <section id="page-automotive" class="page-content hidden">
+      <h2>Automotive Trading & Advisory</h2>
+    </section>
+
+    <section id="page-energy" class="page-content hidden">
+      <h2>Renewable Energy Projects</h2>
+    </section>
+
+    <section id="page-investments" class="page-content hidden">
+      <h2>Opportunities & Investments</h2>
+    </section>
+
+    <section id="page-insights" class="page-content hidden">
+      <h2>Insights & Reflections</h2>
+    </section>
+
+    <section id="page-contact" class="page-content hidden">
+      <h2>Contact & Connect</h2>
+      <form id="contact-form">
+        <label>Name <input name="name" required /></label><br />
+        <label>Email <input name="email" type="email" required /></label><br />
+        <label>Message <textarea name="message" required></textarea></label><br />
+        <button type="submit">Send</button>
+        <button type="button" id="form-reset">Reset</button>
+      </form>
+    </section>
+
+    <div id="modal" role="dialog" aria-modal="true" class="hidden fixed inset-0 bg-black bg-opacity-60 items-center justify-center">
+      <div class="bg-gray-900 p-6 rounded-lg max-w-md mx-auto">
+        <h4 id="modal-title">Message Sent</h4>
+        <p id="modal-desc">Thank you. We'll be in touch.</p>
+        <div><button id="modal-close">Close</button></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="p-6 text-center text-gray-500">AHKstrategies — Strategic Growth Engine</footer>
+
+  <script>
+    (function(){
+      const pages = Array.from(document.querySelectorAll('.page-content'));
+      const navItems = Array.from(document.querySelectorAll('.nav-item'));
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.getElementById('menu-toggle');
+      const modal = document.getElementById('modal');
+      const modalClose = document.getElementById('modal-close');
+
+      function hashToPage(hash){
+        if(!hash) return 'home';
+        if(hash.startsWith('#/')) return hash.slice(2);
+        if(hash.startsWith('#')) return hash.slice(1);
+        return hash;
+      }
+
+      function setActiveNav(pageId){
+        navItems.forEach(item => {
+          if(!item) return;
+          if(item.dataset.page === pageId){ item.classList.add('active'); item.setAttribute('aria-current','page'); }
+          else { item.classList.remove('active'); item.removeAttribute('aria-current'); }
+        });
+      }
+
+      function changePage(pageId, replaceHash=false){
+        const target = document.getElementById('page-' + pageId);
+        if(!target) return;
+        // Hide all pages, then show the target page
+        pages.forEach(p => {
+          p.classList.remove('active-page');
+          p.classList.add('hidden');
+        });
+        target.classList.remove('hidden');
+        target.classList.add('active-page');
+        setActiveNav(pageId);
+        const friendly = '#/' + pageId;
+        try{ if(replaceHash) history.replaceState(null,'',friendly); else history.pushState(null,'',friendly); }catch(e){ window.location.hash = friendly }
+        const heading = target.querySelector('h1,h2'); if(heading){ heading.setAttribute('tabindex','-1'); heading.focus(); }
+      }
+
+      if(navItems && navItems.length){ navItems.forEach(item => {
+        if(!item) return;
+        item.setAttribute('role','button'); item.setAttribute('tabindex','0');
+        item.addEventListener('click', ()=>{ changePage(item.dataset.page); if(sidebar) sidebar.classList.remove('open'); });
+        item.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); item.click(); } });
+      }); }
+
+      if(menuToggle){ menuToggle.addEventListener('click', ()=>{ if(sidebar) sidebar.classList.toggle('open'); const expanded = sidebar ? sidebar.classList.contains('open') : false; menuToggle.setAttribute('aria-expanded', expanded); }); }
+
+      window.addEventListener('popstate', ()=>{ const id = hashToPage(window.location.hash); changePage(id,true); });
+
+      const form = document.getElementById('contact-form');
+      const formReset = document.getElementById('form-reset');
+      if(form){
+        form.addEventListener('submit', async (e)=>{
+          e.preventDefault();
+          const data = Object.fromEntries(new FormData(form));
+          try{
+            const resp = await fetch('/submit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+            if(!resp.ok) throw new Error('Network');
+            if(modal){ modal.classList.remove('hidden'); const title = document.getElementById('modal-title'); const desc = document.getElementById('modal-desc'); if(title) title.textContent = 'Message Sent'; if(desc) desc.textContent = 'Thank you — we will be in touch.'; modal.focus(); }
+            form.reset();
+          }catch(err){
+            if(modal){ modal.classList.remove('hidden'); const title = document.getElementById('modal-title'); const desc = document.getElementById('modal-desc'); if(title) title.textContent = 'Submission saved locally'; if(desc) desc.textContent = 'Saved locally'; }
+            const localMessages = JSON.parse(localStorage.getItem('ahk_messages')||'[]'); localMessages.push({ts:Date.now(), data}); localStorage.setItem('ahk_messages', JSON.stringify(localMessages));
+          }
+        });
+      }
+      if(formReset && form){ formReset.addEventListener('click', ()=> form.reset()); }
+      if(modalClose && modal){ modalClose.addEventListener('click', ()=> modal.classList.add('hidden')); }
+      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal && !modal.classList.contains('hidden')){ modal.classList.add('hidden'); } });
+
+      document.addEventListener('DOMContentLoaded', ()=>{
+        const pageId = hashToPage(window.location.hash) || 'home';
+        // Ensure all non-active pages are hidden initially
+        pages.forEach(p => { if(p.id !== 'page-' + pageId){ p.classList.add('hidden'); p.classList.remove('active-page'); } });
+        changePage(pageId, true);
+        const main = document.getElementById('main-content'); if(main) main.setAttribute('tabindex','-1');
+        document.querySelectorAll('a, button, input, textarea, [role="button"]').forEach(el=>{ if(!el) return; if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex','0'); });
+      });
+    })();
+  </script>
+</body>
+</html>
