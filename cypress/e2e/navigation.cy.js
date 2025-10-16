@@ -51,6 +51,24 @@ describe('AHKstrategies navigation and contact form', () => {
   it('passes a basic a11y scan (critical issues)', () => {
     // ensure axe is injected into the AUT before running the checks
     cy.injectAxe();
-    cy.checkA11y(null, { includedImpacts: ['critical'] });
+    // Run a stricter a11y scan: WCAG 2.1 AA, include critical + moderate impacts
+    const options = {
+      runOnly: {
+        type: 'tag',
+        values: ['wcag21aa']
+      },
+      includedImpacts: ['critical', 'moderate']
+    };
+
+    // Run checkA11y and capture results. If violations exist, save JSON to disk and fail.
+    cy.checkA11y(null, options, (violations) => {
+      // create results directory and write violations JSON for CI
+      const out = { violations };
+      cy.task('saveFile', { filename: 'cypress/results/a11y.json', data: JSON.stringify(out, null, 2) });
+      if (violations && violations.length) {
+        // fail the test with a readable message
+        throw new Error(`Accessibility violations found: ${violations.length} (see cypress/results/a11y.json)`);
+      }
+    });
   });
 });

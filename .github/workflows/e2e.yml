@@ -49,6 +49,10 @@ jobs:
           PORT: 8080
         run: |
           npm run e2e
+          # generate a11y report (creates cypress/results/a11y.html and sets exit code when violations exist)
+          node scripts/generate_a11y_report.js || true
+          # fail the job if violations were reported (script sets exit code 2 when violations exist)
+          if [ $? -eq 2 ]; then echo "Accessibility violations detected (see artifact)"; exit 2; fi
 
       - name: Run e2e tests (Windows - PowerShell)
         if: runner.os == 'Windows'
@@ -58,6 +62,8 @@ jobs:
         run: |
           # On Windows use PowerShell for clearer process handling
           npm run e2e
+          # generate a11y report
+          node scripts/generate_a11y_report.js ; if ($LASTEXITCODE -eq 2) { Write-Error 'Accessibility violations detected (see artifact)'; exit 2 }
 
       - name: Upload Cypress artifacts
         if: always()
@@ -67,3 +73,12 @@ jobs:
           path: |
             cypress/videos
             cypress/screenshots
+
+      - name: Upload accessibility results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-a11y-results
+          path: |
+            cypress/results/a11y.json
+            cypress/results/a11y.html
