@@ -1,0 +1,11 @@
+{
+  "vision.png": {
+    "error": "TypeError: Jimp.read is not a function"
+  },
+  "opening image.png": {
+    "error": "TypeError: Jimp.read is not a function"
+  },
+  "MENA region export business.png": {
+    "error": "TypeError: Jimp.read is not a function"
+  }
+}
