@@ -4,11 +4,13 @@
   "description": "AHKstrategies static site + server + cypress tests",
   "main": "server.js",
   "scripts": {
-  "start": "node server.js",
-  "start:server": "node server.js",
-  "start:detached": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/runDetached.ps1",
+    "start": "node server.js",
+    "start:server": "node server.js",
+    "start:detached": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/runDetached.ps1",
     "test": "cypress run --config baseUrl=http://localhost:8080",
-    "test:open": "cypress open --config baseUrl=http://localhost:8080"
+    "test:open": "cypress open --config baseUrl=http://localhost:8080",
+    "e2e": "node ./scripts/e2e.js",
+    "ci": "npm ci"
   },
   "keywords": [],
   "author": "auto-generated",
