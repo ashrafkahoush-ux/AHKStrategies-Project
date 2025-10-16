@@ -8,7 +8,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
       :root{
-        --bg:#06070a; --panel: rgba(255,255,255,0.03); --muted:#9ca3af; --accent:#60a5fa; --accent-2:#7c3aed;
+        /* Dark-first brand tokens (inspired by provided imagery and palette) */
+        --bg: #06070a; /* page background */
+        --panel: rgba(255,255,255,0.03);
+        --muted: #9ca3af;
+        --accent: #60a5fa; /* Blue Ice Sheen */
+        --accent-2: #7c3aed; /* Violet neon */
+        --gold: #d4af37; /* subtle premium accent */
+        --glass: rgba(255,255,255,0.03);
+        --card-border: rgba(255,255,255,0.04);
       }
       html,body{height:100%}
       body{margin:0;font-family:Poppins,Inter,system-ui,Segoe UI,Roboto;background:linear-gradient(180deg,#05060a 0%, #071026 100%);color:#e6eef8}
@@ -249,7 +257,39 @@
       document.addEventListener('DOMContentLoaded', ()=>{ changePage(hashToPage(location.hash)||'home', true); });
 
       // Hero canvas background: subtle network with glowing nodes (responds to mouse)
-      (function(){ const canvas = document.getElementById('heroCanvas'); if(!canvas) return; const ctx = canvas.getContext('2d'); function resize(){ canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; } window.addEventListener('resize', resize); resize(); let mouse = {x:canvas.width/2, y:canvas.height/2}; canvas.addEventListener('mousemove', e=>{ const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; }); const nodes = Array.from({length:28}, ()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4, r:Math.random()*2+1})); function step(){ ctx.clearRect(0,0,canvas.width,canvas.height); for(let i=0;i<nodes.length;i++){ const a=nodes[i]; a.x+=a.vx; a.y+=a.vy; if(a.x<0||a.x>canvas.width) a.vx *= -1; if(a.y<0||a.y>canvas.height) a.vy *= -1; const d = Math.hypot(a.x-mouse.x, a.y-mouse.y); const glow = Math.max(0, 1 - d/260); ctx.beginPath(); const g = ctx.createRadialGradient(a.x,a.y,0,a.x,a.y,20); g.addColorStop(0, 'rgba(96,165,250,'+(0.6*glow)+')'); g.addColorStop(1, 'rgba(96,165,250,0)'); ctx.fillStyle = g; ctx.arc(a.x,a.y,a.r*3,0,Math.PI*2); ctx.fill(); for(let j=i+1;j<nodes.length;j++){ const b=nodes[j]; const dist = Math.hypot(a.x-b.x,a.y-b.y); if(dist<120){ ctx.strokeStyle = 'rgba(96,165,250,'+ (0.08*(1-dist/120)) +')'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); } } } requestAnimationFrame(step); } step(); })();
+      (function(){
+        const canvas = document.getElementById('heroCanvas'); if(!canvas) return; const ctx = canvas.getContext('2d');
+        function resize(){ canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; }
+        window.addEventListener('resize', resize); resize();
+        let mouse = {x:canvas.width/2, y:canvas.height/2};
+        canvas.addEventListener('mousemove', e=>{ const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+
+        // helper: convert hex CSS variable to rgba string
+        function hexToRgba(hex, a){ if(!hex) return `rgba(96,165,250,${a})`; hex = hex.replace('#',''); if(hex.length===3) hex = hex.split('').map(c=>c+c).join(''); const r = parseInt(hex.substring(0,2),16); const g = parseInt(hex.substring(2,4),16); const b = parseInt(hex.substring(4,6),16); return `rgba(${r},${g},${b},${a})`; }
+        const style = getComputedStyle(document.documentElement);
+        const accent = style.getPropertyValue('--accent').trim() || '#60a5fa';
+        const accent2 = style.getPropertyValue('--accent-2').trim() || '#7c3aed';
+
+        const nodes = Array.from({length:28}, ()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4, r:Math.random()*2+1}));
+        function step(){ ctx.clearRect(0,0,canvas.width,canvas.height);
+          // draw connections
+          for(let i=0;i<nodes.length;i++){
+            const a = nodes[i];
+            for(let j=i+1;j<nodes.length;j++){ const b = nodes[j]; const dx=a.x-b.x, dy=a.y-b.y; const d = Math.hypot(dx,dy); if(d<140){ const alpha = 0.12*(1 - d/140); ctx.strokeStyle = hexToRgba(accent, alpha); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }}
+          }
+          // draw nodes
+          nodes.forEach(n=>{
+            n.x += n.vx; n.y += n.vy; n.pulse = (n.pulse||0) + 0.02; if(n.x<0||n.x>canvas.width) n.vx *= -1; if(n.y<0||n.y>canvas.height) n.vy *= -1;
+            const pr = n.r + Math.sin(n.pulse)*0.8;
+            const g = ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,pr*6);
+            g.addColorStop(0, hexToRgba(accent, 0.9));
+            g.addColorStop(0.35, hexToRgba(accent, 0.18));
+            g.addColorStop(1, hexToRgba(accent2, 0)); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(n.x,n.y, pr*3,0,Math.PI*2); ctx.fill();
+          });
+          requestAnimationFrame(step);
+        }
+        step();
+      })();
 
       // Pillar small canvases
       (function(){ const canvases = document.querySelectorAll('.pillar-canvas'); canvases.forEach(c=>{ const ctx=c.getContext('2d'); function resize(){ c.width=c.clientWidth; c.height=c.clientHeight; } resize(); window.addEventListener('resize', resize); let t=0; function draw(){ ctx.clearRect(0,0,c.width,c.height); t+=0.02; ctx.fillStyle='rgba(96,165,250,0.06)'; ctx.beginPath(); for(let i=0;i<6;i++){ const x = c.width/2 + Math.cos(t+i)* (c.width*0.28); const y = c.height/2 + Math.sin(t+i)* (c.height*0.18); ctx.lineTo(x,y); } ctx.closePath(); ctx.fill(); requestAnimationFrame(draw); } draw(); }); })();
