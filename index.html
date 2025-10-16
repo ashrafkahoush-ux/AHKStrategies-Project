@@ -40,7 +40,17 @@
 
       footer{margin-top:28px;color:var(--muted);text-align:center}
 
-      @media(max-width:1000px){.layout{flex-direction:column}.sidebar{width:100%;display:flex;gap:10px;align-items:center}.main{padding:18px}.hero-grid{grid-template-columns:1fr}.pillars{grid-template-columns:repeat(2,1fr)}}
+      @media(max-width:1000px){
+        .layout{flex-direction:column}
+        /* move nav to top as a horizontal strip for mobile */
+        .sidebar{position:fixed;top:0;left:0;right:0;height:auto;width:100%;display:flex;gap:12px;align-items:center;padding:12px 16px;overflow-x:auto;background:linear-gradient(180deg,rgba(6,6,9,0.96),rgba(6,6,9,0.92));z-index:40;border-bottom:1px solid rgba(255,255,255,0.02)}
+        .sidebar .brand{margin-right:12px}
+        .sidebar .nav-item{white-space:nowrap;padding:8px 12px;border-radius:10px}
+        .main{padding:18px;margin-top:72px}
+        .hero-grid{grid-template-columns:1fr}
+        .pillars{grid-template-columns:repeat(2,1fr)}
+        .immersive{height:320px}
+      }
     </style>
   </head>
   <body>
