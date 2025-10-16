@@ -15,6 +15,9 @@
     .page-content.active-page{opacity:1}
     .hidden{display:none}
     .nav-item.active{color:var(--color-blue-accent);border-left:4px solid var(--color-blue);padding-left:1.5rem}
+    /* Emphasize the Middle East nav item visually */
+    .nav-item--hub { font-weight: 600; color: var(--color-blue-accent); }
+    .nav-note { display:block; font-size:0.8rem; color:#9ca3af; margin-left:0.5rem }
   </style>
 </head>
 <body>
@@ -27,8 +30,9 @@
       <li class="nav-item" data-page="home">Home</li>
       <li class="nav-item" data-page="about">About</li>
       <li class="nav-item" data-page="automotive">Automotive</li>
-      <li class="nav-item" data-page="energy">Energy</li>
-      <li class="nav-item" data-page="investments">Investments</li>
+        <li class="nav-item" data-page="energy">Energy</li>
+        <li class="nav-item nav-item--hub" data-page="middle-east">Middle East <span class="nav-note">Regional hub</span></li>
+        <li class="nav-item" data-page="investments">Investments</li>
       <li class="nav-item" data-page="insights">Insights</li>
       <li class="nav-item" data-page="contact">Contact</li>
     </ul>
@@ -51,6 +55,11 @@
 
     <section id="page-energy" class="page-content hidden">
       <h2>Renewable Energy Projects</h2>
+    </section>
+
+    <section id="page-middle-east" class="page-content hidden">
+      <h2>Middle East — Regional Hub</h2>
+      <p>The Middle East is the strategic hub connecting Mobility, Energy, and Investment opportunities across the region. It serves as the core around which our projects and partnerships revolve.</p>
     </section>
 
     <section id="page-investments" class="page-content hidden">
