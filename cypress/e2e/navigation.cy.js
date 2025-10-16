@@ -57,7 +57,10 @@ describe('AHKstrategies navigation and contact form', () => {
         type: 'tag',
         values: ['wcag21aa']
       },
+      // include only critical + moderate impacts for initial baseline
       includedImpacts: ['critical', 'moderate']
+      // To tighten the gate in future, include 'serious' as well:
+      // includedImpacts: ['critical', 'serious', 'moderate']
     };
 
     // Run checkA11y and capture results. If violations exist, save JSON to disk and fail.

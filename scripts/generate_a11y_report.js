@@ -13,6 +13,10 @@ function summarize(violations){
   return counts;
 }
 
+function escapeHtml(s){
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 try{
   if(!fs.existsSync(inPath)){
     console.log('No a11y JSON found at', inPath);
@@ -23,15 +27,33 @@ try{
   const violations = parsed.violations || [];
   const counts = summarize(violations);
 
-  const html = `<!doctype html><html><head><meta charset="utf-8"><title>A11Y Report</title><style>body{font-family:Arial,Helvetica,sans-serif;background:#0b0b0b;color:#eee;padding:20px}pre{background:#111;padding:10px;border-radius:6px;overflow:auto}table{border-collapse:collapse;width:100%;margin-bottom:16px}td,th{border:1px solid #222;padding:8px;text-align:left}</style></head><body><h1>Accessibility report</h1><p>Violations: ${violations.length}</p><ul><li>critical: ${counts.critical}</li><li>serious: ${counts.serious}</li><li>moderate: ${counts.moderate}</li><li>minor: ${counts.minor}</li></ul><h2>Raw JSON</h2><pre>${JSON.stringify(parsed, null, 2)}</pre></body></html>`;
+  // Build a friendly HTML with per-violation quick links
+  let rows = '';
+  violations.forEach((v, idx) => {
+    const id = `violation-${idx}`;
+    const impacts = v.impact || '';
+    const nodes = v.nodes || [];
+    const selectors = nodes.map(n => escapeHtml((n.target || []).join(', '))).join('<br>');
+    const snippets = nodes.map(n => '<pre>' + escapeHtml(n.html || '') + '</pre>').join('<hr>');
+    rows += `<tr id="${id}"><td>${idx+1}</td><td>${escapeHtml(v.id)}</td><td>${escapeHtml(v.help)}</td><td>${escapeHtml(v.impact)}</td><td>${selectors}</td><td>${snippets}</td></tr>`;
+  });
+
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>A11Y Report</title><style>body{font-family:Arial,Helvetica,sans-serif;background:#0b0b0b;color:#eee;padding:20px}pre{background:#111;color:#eee;padding:10px;border-radius:6px;overflow:auto}table{border-collapse:collapse;width:100%;margin-bottom:16px}td,th{border:1px solid #222;padding:8px;text-align:left}th{background:#111}</style></head><body><h1>Accessibility report</h1><p>Violations: ${violations.length}</p><ul><li>critical: ${counts.critical}</li><li>serious: ${counts.serious}</li><li>moderate: ${counts.moderate}</li><li>minor: ${counts.minor}</li></ul><h2>Violations</h2>${violations.length?`<table><thead><tr><th>#</th><th>rule</th><th>help</th><th>impact</th><th>selectors</th><th>snippet</th></tr></thead><tbody>${rows}</tbody></table>`:'<p>No violations found.</p>'}<h2>Raw JSON</h2><pre>${escapeHtml(JSON.stringify(parsed, null, 2))}</pre></body></html>`;
 
   fs.mkdirSync(path.dirname(outHtml), { recursive: true });
   fs.writeFileSync(outHtml, html, 'utf8');
 
   // Print a concise summary for CI logs
   console.log('A11Y summary:', counts);
+  // print a small table for readability
+  console.log('| impact | count |');
+  console.log('|--------|-------|');
+  console.log(`| critical | ${counts.critical} |`);
+  console.log(`| moderate | ${counts.moderate} |`);
+  console.log(`| serious | ${counts.serious} |`);
+
   if(violations.length > 0){
-    // exit non-zero so the CI job can be marked failed by a later step if desired
+    // set exit code so the CI job can be marked failed by the workflow logic
     process.exitCode = 2;
   }
 } catch (err){

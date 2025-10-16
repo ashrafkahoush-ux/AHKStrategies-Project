@@ -46,7 +46,7 @@ jobs:
       - name: Run e2e tests (Linux/macOS)
         if: runner.os != 'Windows'
         env:
-          PORT: 8080
+          PORT: ${{ env.PORT || '8080' }}
         run: |
           npm run e2e
           # generate a11y report (creates cypress/results/a11y.html and sets exit code when violations exist)
@@ -58,7 +58,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         env:
-          PORT: 8080
+          PORT: ${{ env.PORT || '8080' }}
         run: |
           # On Windows use PowerShell for clearer process handling
           npm run e2e
@@ -82,3 +82,10 @@ jobs:
           path: |
             cypress/results/a11y.json
             cypress/results/a11y.html
+
+      - name: Job summary - print a11y counts
+        if: always()
+        run: |
+          echo 'Printing accessibility summary (if available)';
+          node scripts/print_a11y_summary.js || true
+        shell: bash
