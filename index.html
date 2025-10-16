@@ -1,178 +1,239 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AHKstrategies | Strategic Growth Engine</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{--color-graphite:#1a1a1a;--color-blue:#3b82f6;--color-blue-accent:#60a5fa}
-    body{font-family:Poppins, sans-serif;background:var(--color-graphite);color:#e5e5e5}
-    .sidebar{width:250px;position:fixed;left:0;top:0;bottom:0;padding:2rem;background:var(--color-graphite)}
-    .main-content{margin-left:250px;padding:2rem}
-    .page-content{opacity:0;transition:opacity .25s ease}
-    .page-content.active-page{opacity:1}
-    .hidden{display:none}
-    .nav-item.active{color:var(--color-blue-accent);border-left:4px solid var(--color-blue);padding-left:1.5rem}
-    /* Emphasize the Middle East nav item visually */
-    .nav-item--hub { font-weight: 600; color: var(--color-blue-accent); }
-    .nav-note { display:block; font-size:0.8rem; color:#9ca3af; margin-left:0.5rem }
-  </style>
-</head>
-<body>
-  <a href="#main-content" class="sr-only">Skip to content</a>
-  <button id="menu-toggle" class="lg:hidden">Menu</button>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AHKStrategies — Six Strategic Dimensions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root{
+        --bg:#06070a; --panel: rgba(255,255,255,0.03); --muted:#9ca3af; --accent:#60a5fa; --accent-2:#7c3aed;
+      }
+      html,body{height:100%}
+      body{margin:0;font-family:Poppins,Inter,system-ui,Segoe UI,Roboto;background:linear-gradient(180deg,#05060a 0%, #071026 100%);color:#e6eef8}
+      .layout{display:flex;min-height:100vh}
+      .sidebar{width:260px;padding:28px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-right:1px solid rgba(255,255,255,0.02)}
+      .brand{font-weight:700;font-size:20px}
+      .nav-item{padding:10px;border-radius:8px;color:var(--muted);cursor:pointer}
+      .nav-item.active{color:var(--accent);background:linear-gradient(90deg, rgba(96,165,250,0.05), rgba(124,58,237,0.03))}
+      .main{flex:1;padding:36px}
+      .hero{position:relative;border-radius:12px;padding:28px;background:linear-gradient(180deg, rgba(10,12,20,0.6), rgba(6,8,14,0.75));overflow:hidden;box-shadow:0 20px 60px rgba(2,6,23,0.6)}
+      .hero-grid{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center}
+      h1.title{font-size:44px;margin:0 0 10px}
+      p.lead{color:var(--muted);margin:0 0 18px}
 
-  <nav id="sidebar" class="sidebar" role="navigation" aria-label="Primary navigation">
-    <div class="text-3xl font-bold mb-10">AHK<span style="color:var(--color-blue)">strategies</span></div>
-    <ul>
-      <li class="nav-item" data-page="home">Home</li>
-      <li class="nav-item" data-page="about">About</li>
-      <li class="nav-item" data-page="automotive">Automotive</li>
-        <li class="nav-item" data-page="energy">Energy</li>
-        <li class="nav-item nav-item--hub" data-page="middle-east">Middle East <span class="nav-note">Regional hub</span></li>
-        <li class="nav-item" data-page="investments">Investments</li>
-      <li class="nav-item" data-page="insights">Insights</li>
-      <li class="nav-item" data-page="contact">Contact</li>
-    </ul>
-  </nav>
+      .pillars{margin-top:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+      .pillar{position:relative;padding:18px;border-radius:12px;background:var(--panel);border:1px solid rgba(255,255,255,0.02);backdrop-filter: blur(6px);overflow:hidden}
+      .pillar h3{margin:0 0 8px}
+      .pillar p{color:var(--muted);margin:0}
 
-  <main id="main-content" class="main-content" role="main">
-    <section id="page-home" class="page-content">
-      <h1>Strategic Growth Engine</h1>
-      <p>for Mobility, Energy, and Investment.</p>
-    </section>
+      .section-full{margin-top:28px;padding:22px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
 
-    <section id="page-about" class="page-content hidden">
-      <h2>About AHKstrategies</h2>
-      <p>28+ years of experience in the MENA region.</p>
-    </section>
+      /* large immersive section styles */
+      .immersive{position:relative;height:420px;border-radius:12px;overflow:hidden}
+      .immersive canvas{position:absolute;inset:0;width:100%;height:100%;}
+      .immersive .content{position:relative;z-index:6;padding:24px}
 
-    <section id="page-automotive" class="page-content hidden">
-      <h2>Automotive Trading & Advisory</h2>
-    </section>
+      .page-content{opacity:0;transform:translateY(6px);transition:opacity .28s ease, transform .28s ease}
+      .page-content.active-page{opacity:1;transform:none}
 
-    <section id="page-energy" class="page-content hidden">
-      <h2>Renewable Energy Projects</h2>
-    </section>
+      footer{margin-top:28px;color:var(--muted);text-align:center}
 
-    <section id="page-middle-east" class="page-content hidden">
-      <h2>Middle East — Regional Hub</h2>
-      <p>The Middle East is the strategic hub connecting Mobility, Energy, and Investment opportunities across the region. It serves as the core around which our projects and partnerships revolve.</p>
-    </section>
+      @media(max-width:1000px){.layout{flex-direction:column}.sidebar{width:100%;display:flex;gap:10px;align-items:center}.main{padding:18px}.hero-grid{grid-template-columns:1fr}.pillars{grid-template-columns:repeat(2,1fr)}}
+    </style>
+  </head>
+  <body>
+    <a href="#main-content" class="sr-only">Skip to content</a>
 
-    <section id="page-investments" class="page-content hidden">
-      <h2>Opportunities & Investments</h2>
-    </section>
+    <div class="layout">
+      <aside id="sidebar" class="sidebar" role="navigation" aria-label="Primary navigation">
+        <div class="brand">AHK<span style="color:var(--accent)">Strategies</span></div>
+        <nav style="margin-top:18px">
+          <div class="nav-item" data-page="home">Home</div>
+          <div class="nav-item" data-page="about">About</div>
+          <div class="nav-item" data-page="contact">Contact</div>
+        </nav>
+        <div style="position:absolute;left:28px;bottom:20px;color:var(--muted);font-size:12px">© AHKStrategies</div>
+      </aside>
 
-    <section id="page-insights" class="page-content hidden">
-      <h2>Insights & Reflections</h2>
-    </section>
+      <main id="main-content" class="main" role="main">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-grid">
+            <div class="left">
+              <h1 id="hero-title" class="title">The Six Strategic Dimensions</h1>
+              <p class="lead">Turn complexity into clarity — at scale. Explore our immersive pillars that fuse strategy, AI, and regional expertise into outcomes that move markets.</p>
+              <div class="pillars" role="list">
+                <article class="pillar" role="listitem" data-pillar="cognitive">
+                  <h3>1. Cognitive Intelligence Integration</h3>
+                  <p>We build AI systems that anticipate and adapt — turning real-time data into actionable foresight.</p>
+                </article>
+                <article class="pillar" role="listitem" data-pillar="digital">
+                  <h3>2. Human-Centered Digital Products</h3>
+                  <p>Beautiful, intuitive mobile experiences engineered to scale — from MVPs to millions of users.</p>
+                </article>
+                <article class="pillar" role="listitem" data-pillar="visioneering">
+                  <h3>3. Strategic Visioneering</h3>
+                  <p>Insight-led strategies shaped by regional intelligence and future scenarios.</p>
+                </article>
+                <article class="pillar" role="listitem" data-pillar="ecosystems">
+                  <h3>4. Unified Tech Ecosystems</h3>
+                  <p>We stitch tools into a single smart fabric — CRM, ERP, data lakes and APIs working together.</p>
+                </article>
+                <article class="pillar" role="listitem" data-pillar="mena">
+                  <h3>5. Empowering MENA’s Boldest Builders</h3>
+                  <p>Rooted in the region, built for the world: scaling SMEs with confidence and global reach.</p>
+                </article>
+                <article class="pillar" role="listitem" data-pillar="orbit">
+                  <h3>6. The Orbit Framework™</h3>
+                  <p>One core. Infinite momentum. Strategy, tech, and design orbit a mission that evolves with you.</p>
+                </article>
+              </div>
+            </div>
 
-    <section id="page-contact" class="page-content hidden">
-      <h2>Contact & Connect</h2>
-      <form id="contact-form">
-        <label>Name <input name="name" required /></label><br />
-        <label>Email <input name="email" type="email" required /></label><br />
-        <label>Message <textarea name="message" required></textarea></label><br />
-        <button type="submit">Send</button>
-        <button type="button" id="form-reset">Reset</button>
-      </form>
-    </section>
+            <div class="immersive" aria-hidden="true">
+              <canvas id="heroCanvas"></canvas>
+              <div class="content">
+                <div style="display:flex;gap:12px;align-items:center">
+                  <div style="width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#04102b">6</div>
+                  <div>
+                    <div style="font-weight:700">The Orbit Framework™</div>
+                    <div style="color:var(--muted);font-size:14px">One core. Infinite momentum.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-    <div id="modal" role="dialog" aria-modal="true" class="hidden fixed inset-0 bg-black bg-opacity-60 items-center justify-center">
-      <div class="bg-gray-900 p-6 rounded-lg max-w-md mx-auto">
-        <h4 id="modal-title">Message Sent</h4>
-        <p id="modal-desc">Thank you. We'll be in touch.</p>
-        <div><button id="modal-close">Close</button></div>
-      </div>
+        <!-- Pillar detail sections (each immersive and interactive) -->
+        <section id="page-home" class="page-content active-page">
+          <h2>Overview</h2>
+          <p class="muted">Select a pillar to explore an immersive preview. Hover or click each card for motion and detail.</p>
+        </section>
+
+        <section id="page-cognitive" class="page-content" aria-labelledby="cog-h">
+          <div class="section-full">
+            <h2 id="cog-h">Cognitive Intelligence Integration</h2>
+            <p class="muted">Turn complexity into clarity — at scale. Our cognitive engines anticipate and adapt through layered ML and real-time pipelines.</p>
+            <div style="height:240px;margin-top:12px;position:relative;border-radius:10px;overflow:hidden;background:linear-gradient(90deg, rgba(96,165,250,0.03), rgba(124,58,237,0.02));">
+              <canvas class="pillar-canvas" data-for="cognitive"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <section id="page-digital" class="page-content" aria-labelledby="dig-h">
+          <div class="section-full">
+            <h2 id="dig-h">Human-Centered Digital Products</h2>
+            <p class="muted">Designed for users. Engineered for impact. Real app mockups that respond to gestures and mouse input.</p>
+            <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
+              <div style="width:180px;height:320px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);display:flex;align-items:center;justify-content:center">App UI</div>
+              <div style="width:180px;height:320px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);display:flex;align-items:center;justify-content:center">App UI</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="page-visioneering" class="page-content" aria-labelledby="vision-h">
+          <div class="section-full">
+            <h2 id="vision-h">Strategic Visioneering</h2>
+            <p class="muted">Insight-led strategies crafted from scenario modelling and regional intelligence.</p>
+            <div style="height:160px;margin-top:12px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent)"></div>
+          </div>
+        </section>
+
+        <section id="page-ecosystems" class="page-content" aria-labelledby="eco-h">
+          <div class="section-full">
+            <h2 id="eco-h">Unified Tech Ecosystems</h2>
+            <p class="muted">Seamless systems. Infinite synergy — hexagonal nodes link tools and create flow.</p>
+            <div style="height:180px;margin-top:12px;position:relative;border-radius:8px;overflow:hidden;background:linear-gradient(90deg, rgba(124,58,237,0.02), rgba(96,165,250,0.02));">
+              <canvas class="pillar-canvas" data-for="ecosystems"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <section id="page-mena" class="page-content" aria-labelledby="mena-h">
+          <div class="section-full">
+            <h2 id="mena-h">Empowering MENA’s Boldest Builders</h2>
+            <p class="muted">Built in MENA. Built for the world — glowing nodes map regional growth and global links.</p>
+            <div style="height:200px;margin-top:12px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);"></div>
+          </div>
+        </section>
+
+        <section id="page-orbit" class="page-content" aria-labelledby="orbit-h">
+          <div class="section-full">
+            <h2 id="orbit-h">The Orbit Framework™</h2>
+            <p class="muted">One core. Infinite momentum — a visual, gravitational system that ties services together around a living center.</p>
+            <div style="height:220px;margin-top:12px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);"></div>
+          </div>
+        </section>
+
+        <section id="page-about" class="page-content">
+          <h2>About AHKStrategies</h2>
+          <p class="muted">28+ years of regional expertise, building tech that scales across MENA and beyond.</p>
+        </section>
+
+        <section id="page-contact" class="page-content">
+          <h2>Contact & Connect</h2>
+          <form id="contact-form" aria-labelledby="contact-h">
+            <div><label>Name <input name="name" required /></label></div>
+            <div><label>Email <input name="email" type="email" required /></label></div>
+            <div><label>Message <textarea name="message" required></textarea></label></div>
+            <div style="margin-top:8px"><button type="submit">Send</button> <button type="button" id="form-reset">Reset</button></div>
+          </form>
+        </section>
+
+        <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+          <div class="bg-gray-900 p-6 rounded-lg w-full max-w-md border border-gray-700">
+            <h4 id="modal-title">Message Sent</h4>
+            <p id="modal-desc">Thank you. We'll review your message and get back to you.</p>
+            <div class="mt-4 flex justify-end"><button id="modal-close">Close</button></div>
+          </div>
+        </div>
+
+        <footer>
+          AHKStrategies — Strategic Growth Engine
+        </footer>
+      </main>
     </div>
-  </main>
 
-  <footer class="p-6 text-center text-gray-500">AHKstrategies — Strategic Growth Engine</footer>
-
-  <script>
-    (function(){
-      const pages = Array.from(document.querySelectorAll('.page-content'));
-      const navItems = Array.from(document.querySelectorAll('.nav-item'));
-      const sidebar = document.getElementById('sidebar');
-      const menuToggle = document.getElementById('menu-toggle');
+    <script>
+      // Routing & UI glue (kept minimal and accessible)
+      const pages = document.querySelectorAll('.page-content');
+      const navItems = document.querySelectorAll('.nav-item');
+      const pillars = document.querySelectorAll('.pillar');
       const modal = document.getElementById('modal');
       const modalClose = document.getElementById('modal-close');
 
-      function hashToPage(hash){
-        if(!hash) return 'home';
-        if(hash.startsWith('#/')) return hash.slice(2);
-        if(hash.startsWith('#')) return hash.slice(1);
-        return hash;
-      }
+      function hashToPage(hash){ if(!hash) return 'home'; if(hash.startsWith('#/')) return hash.slice(2); if(hash.startsWith('#')) return hash.slice(1); return hash; }
+      function setActiveNav(pageId){ navItems.forEach(item=>{ if(item.dataset.page===pageId){ item.classList.add('active'); item.setAttribute('aria-current','page') } else { item.classList.remove('active'); item.removeAttribute('aria-current') } }); }
+      function changePage(pageId, replace=false){ const target = document.getElementById('page-' + pageId) || document.getElementById('page-' + pageId.replace('/','')); if(!target) return; pages.forEach(p=>p.classList.remove('active-page')); target.classList.add('active-page'); setActiveNav(pageId); const friendly = '#/' + pageId; try{ if(replace) history.replaceState(null,'',friendly); else history.pushState(null,'',friendly); }catch(e){ window.location.hash=friendly; } const h = target.querySelector('h1,h2'); if(h){ h.setAttribute('tabindex','-1'); h.focus(); } }
 
-      function setActiveNav(pageId){
-        navItems.forEach(item => {
-          if(!item) return;
-          if(item.dataset.page === pageId){ item.classList.add('active'); item.setAttribute('aria-current','page'); }
-          else { item.classList.remove('active'); item.removeAttribute('aria-current'); }
+      navItems.forEach(n=>{ n.setAttribute('role','button'); n.setAttribute('tabindex','0'); n.addEventListener('click', ()=> changePage(n.dataset.page)); n.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); n.click(); } }); });
+
+      pillars.forEach(p=>{
+        p.addEventListener('mouseenter', ()=>{ p.style.transform = 'translateY(-6px)'; p.style.transition = 'transform .24s ease'; });
+        p.addEventListener('mouseleave', ()=>{ p.style.transform = ''; });
+        p.addEventListener('click', ()=>{
+          const id = p.dataset.pillar;
+          const targetId = id === 'cognitive' ? 'cognitive' : id === 'digital' ? 'digital' : id === 'visioneering' ? 'visioneering' : id === 'ecosystems' ? 'ecosystems' : id === 'mena' ? 'mena' : 'orbit';
+          changePage(targetId);
         });
-      }
+      });
 
-      function changePage(pageId, replaceHash=false){
-        const target = document.getElementById('page-' + pageId);
-        if(!target) return;
-        // Hide all pages, then show the target page
-        pages.forEach(p => {
-          p.classList.remove('active-page');
-          p.classList.add('hidden');
-        });
-        target.classList.remove('hidden');
-        target.classList.add('active-page');
-        setActiveNav(pageId);
-        const friendly = '#/' + pageId;
-        try{ if(replaceHash) history.replaceState(null,'',friendly); else history.pushState(null,'',friendly); }catch(e){ window.location.hash = friendly }
-        const heading = target.querySelector('h1,h2'); if(heading){ heading.setAttribute('tabindex','-1'); heading.focus(); }
-      }
-
-      if(navItems && navItems.length){ navItems.forEach(item => {
-        if(!item) return;
-        item.setAttribute('role','button'); item.setAttribute('tabindex','0');
-        item.addEventListener('click', ()=>{ changePage(item.dataset.page); if(sidebar) sidebar.classList.remove('open'); });
-        item.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); item.click(); } });
-      }); }
-
-      if(menuToggle){ menuToggle.addEventListener('click', ()=>{ if(sidebar) sidebar.classList.toggle('open'); const expanded = sidebar ? sidebar.classList.contains('open') : false; menuToggle.setAttribute('aria-expanded', expanded); }); }
-
-      window.addEventListener('popstate', ()=>{ const id = hashToPage(window.location.hash); changePage(id,true); });
-
+      // form handling
       const form = document.getElementById('contact-form');
       const formReset = document.getElementById('form-reset');
-      if(form){
-        form.addEventListener('submit', async (e)=>{
-          e.preventDefault();
-          const data = Object.fromEntries(new FormData(form));
-          try{
-            const resp = await fetch('/submit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
-            if(!resp.ok) throw new Error('Network');
-            if(modal){ modal.classList.remove('hidden'); const title = document.getElementById('modal-title'); const desc = document.getElementById('modal-desc'); if(title) title.textContent = 'Message Sent'; if(desc) desc.textContent = 'Thank you — we will be in touch.'; modal.focus(); }
-            form.reset();
-          }catch(err){
-            if(modal){ modal.classList.remove('hidden'); const title = document.getElementById('modal-title'); const desc = document.getElementById('modal-desc'); if(title) title.textContent = 'Submission saved locally'; if(desc) desc.textContent = 'Saved locally'; }
-            const localMessages = JSON.parse(localStorage.getItem('ahk_messages')||'[]'); localMessages.push({ts:Date.now(), data}); localStorage.setItem('ahk_messages', JSON.stringify(localMessages));
-          }
-        });
-      }
-      if(formReset && form){ formReset.addEventListener('click', ()=> form.reset()); }
-      if(modalClose && modal){ modalClose.addEventListener('click', ()=> modal.classList.add('hidden')); }
-      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal && !modal.classList.contains('hidden')){ modal.classList.add('hidden'); } });
+      if(form){ form.addEventListener('submit', async e=>{ e.preventDefault(); const data = Object.fromEntries(new FormData(form)); try{ const resp = await fetch('/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); if(!resp.ok) throw new Error('Network'); if(modal) modal.classList.remove('hidden'); form.reset(); }catch(err){ if(modal){ modal.classList.remove('hidden'); document.getElementById('modal-desc').textContent = 'Could not reach server — saved locally.' } const storage = JSON.parse(localStorage.getItem('ahk_messages')||'[]'); storage.push({ts:Date.now(),data}); localStorage.setItem('ahk_messages', JSON.stringify(storage)); } }); }
+      if(formReset && form) formReset.addEventListener('click', ()=> form.reset()); if(modalClose && modal) modalClose.addEventListener('click', ()=> modal.classList.add('hidden'));
+      window.addEventListener('keydown', e=>{ if(e.key==='Escape' && modal && !modal.classList.contains('hidden')) modal.classList.add('hidden'); });
+      window.addEventListener('popstate', ()=>{ changePage(hashToPage(location.hash), true); });
+      document.addEventListener('DOMContentLoaded', ()=>{ changePage(hashToPage(location.hash)||'home', true); });
 
-      document.addEventListener('DOMContentLoaded', ()=>{
-        const pageId = hashToPage(window.location.hash) || 'home';
-        // Ensure all non-active pages are hidden initially
-        pages.forEach(p => { if(p.id !== 'page-' + pageId){ p.classList.add('hidden'); p.classList.remove('active-page'); } });
-        changePage(pageId, true);
-        const main = document.getElementById('main-content'); if(main) main.setAttribute('tabindex','-1');
-        document.querySelectorAll('a, button, input, textarea, [role="button"]').forEach(el=>{ if(!el) return; if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex','0'); });
-      });
-    })();
-  </script>
-</body>
+      // Hero canvas background: subtle network with glowing nodes (responds to mouse)
+      (function(){ const canvas = document.getElementById('heroCanvas'); if(!canvas) return; const ctx = canvas.getContext('2d'); function resize(){ canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; } window.addEventListener('resize', resize); resize(); let mouse = {x:canvas.width/2, y:canvas.height/2}; canvas.addEventListener('mousemove', e=>{ const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; }); const nodes = Array.from({length:28}, ()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4, r:Math.random()*2+1})); function step(){ ctx.clearRect(0,0,canvas.width,canvas.height); for(let i=0;i<nodes.length;i++){ const a=nodes[i]; a.x+=a.vx; a.y+=a.vy; if(a.x<0||a.x>canvas.width) a.vx *= -1; if(a.y<0||a.y>canvas.height) a.vy *= -1; const d = Math.hypot(a.x-mouse.x, a.y-mouse.y); const glow = Math.max(0, 1 - d/260); ctx.beginPath(); const g = ctx.createRadialGradient(a.x,a.y,0,a.x,a.y,20); g.addColorStop(0, 'rgba(96,165,250,'+(0.6*glow)+')'); g.addColorStop(1, 'rgba(96,165,250,0)'); ctx.fillStyle = g; ctx.arc(a.x,a.y,a.r*3,0,Math.PI*2); ctx.fill(); for(let j=i+1;j<nodes.length;j++){ const b=nodes[j]; const dist = Math.hypot(a.x-b.x,a.y-b.y); if(dist<120){ ctx.strokeStyle = 'rgba(96,165,250,'+ (0.08*(1-dist/120)) +')'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); } } } requestAnimationFrame(step); } step(); })();
+
+      // Pillar small canvases
+      (function(){ const canvases = document.querySelectorAll('.pillar-canvas'); canvases.forEach(c=>{ const ctx=c.getContext('2d'); function resize(){ c.width=c.clientWidth; c.height=c.clientHeight; } resize(); window.addEventListener('resize', resize); let t=0; function draw(){ ctx.clearRect(0,0,c.width,c.height); t+=0.02; ctx.fillStyle='rgba(96,165,250,0.06)'; ctx.beginPath(); for(let i=0;i<6;i++){ const x = c.width/2 + Math.cos(t+i)* (c.width*0.28); const y = c.height/2 + Math.sin(t+i)* (c.height*0.18); ctx.lineTo(x,y); } ctx.closePath(); ctx.fill(); requestAnimationFrame(draw); } draw(); }); })();
+    </script>
+  </body>
 </html>
