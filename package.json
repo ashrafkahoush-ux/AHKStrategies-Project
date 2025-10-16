@@ -8,6 +8,7 @@
     "start:server": "node server.js",
     "start:detached": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/runDetached.ps1",
     "test": "cypress run --config baseUrl=http://localhost:8080",
+  "screenshot:hero": "cypress run --spec cypress/e2e/hero_screenshot.cy.js --config baseUrl=http://localhost:8080 && node ./scripts/save_hero_artifact.js",
     "test:open": "cypress open --config baseUrl=http://localhost:8080",
     "e2e": "node ./scripts/e2e.js",
     "ci": "npm ci"
