@@ -17,5 +17,26 @@ try{
   console.log(`| moderate | ${counts.moderate||0} |`);
   console.log(`| serious | ${counts.serious||0} |`);
   console.log(`Total violations: ${violations.length}`);
+
+  // If running inside GitHub Actions, append a concise markdown table to the job summary
+  const ghSummary = process.env.GITHUB_STEP_SUMMARY;
+  if(ghSummary){
+    try{
+      const md = [];
+      md.push('### Accessibility summary');
+      md.push('');
+      md.push('| impact | count |');
+      md.push('|--------|-------|');
+      md.push(`| critical | ${counts.critical||0} |`);
+      md.push(`| moderate | ${counts.moderate||0} |`);
+      md.push(`| serious | ${counts.serious||0} |`);
+      md.push('');
+      md.push(`Total violations: **${violations.length}**`);
+      md.push('');
+      fs.appendFileSync(ghSummary, md.join('\n'));
+      console.log('Wrote summary to GITHUB_STEP_SUMMARY');
+    }catch(err){ console.warn('Failed to write GITHUB_STEP_SUMMARY', err); }
+  }
+
   if(violations.length > 0) process.exitCode = 2;
 }catch(err){ console.error('Failed to read/parse a11y JSON', err); process.exit(1);} 
