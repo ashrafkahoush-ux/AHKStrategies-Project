@@ -1,10 +1,17 @@
-﻿import dynamic from "next/dynamic";
-const Hero = dynamic(() => import("../components/Hero"), { ssr: false });
+﻿import dynamic from 'next/dynamic';
+import Header from '../components/Header';
+import AiVisuals from '../components/AiVisuals';
+
+const Hero = dynamic(() => import('../components/Hero'), { ssr: false });
 
 export default function Home() {
   return (
-    <main>
-      <Hero />
-    </main>
+    <>
+      <Header />
+      <main>
+        <Hero headline="AHKStrategies — Intelligence in Motion." />
+        <AiVisuals />
+      </main>
+    </>
   );
 }
