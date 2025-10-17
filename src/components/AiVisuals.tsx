@@ -14,7 +14,7 @@ export default function AiVisuals() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    console.log('✅ Visual integration complete: AI visuals and brand assets live.');
+    console.log('✅ AHKStrategies visual integration active: cinematic background + 3D visuals loaded.');
   }, []);
 
   return (

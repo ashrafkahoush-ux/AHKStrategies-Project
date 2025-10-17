@@ -1,6 +1,7 @@
 ﻿"use client";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Hero({ headline = 'AHKStrategies — Intelligence in Motion.' }: { headline?: string }) {
   const [video, setVideo] = useState<string | null>(null);
@@ -19,16 +20,27 @@ export default function Hero({ headline = 'AHKStrategies — Intelligence in Mot
 
   return (
     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} style={{ position: 'relative', height: '80vh', overflow: 'hidden' }} aria-label="Hero">
-      {video ? (
-        <video src={video} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-      ) : (
-        <div style={{ width: '100%', height: '100%', background: 'linear-gradient(180deg,#070617,#000)' }} />
+      {/* Cinematic background image layer */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+        <Image src="/assets/ai_visuals/hero_cinematic_bg_v1.png" alt="AHKStrategies cinematic background" fill style={{ objectFit: 'cover' }} priority />
+      </div>
+
+      {/* Video fallback layer (if video available, overlay on top of image) */}
+      {video && (
+        <video src={video} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7, zIndex: 1 }} />
       )}
 
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-        <motion.h1 aria-live="polite" initial={{ scale: 0.98, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 1 }} style={{ color: '#fff', fontSize: 'clamp(28px, 5vw, 48px)', fontWeight: 800, textAlign: 'center', textShadow: '0 4px 24px rgba(0,0,0,0.6)' }}>
+      {/* Gradient overlay for text readability */}
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.6))', zIndex: 2 }} />
+
+      {/* Text overlay */}
+      <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 3, pointerEvents: 'none' }}>
+        <motion.h1 aria-live="polite" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} style={{ color: '#e0f2fe', fontSize: 'clamp(32px, 6vw, 64px)', fontWeight: 800, textAlign: 'center', textShadow: '0 0 20px rgba(224,242,254,0.6)', marginBottom: '1rem' }}>
           {headline}
         </motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.5 }} style={{ color: '#e0f2fe', fontSize: 'clamp(18px, 3vw, 28px)', fontWeight: 400, textAlign: 'center', textShadow: '0 0 12px rgba(224,242,254,0.4)' }}>
+          Where Vision Becomes Intelligence.
+        </motion.p>
       </div>
     </motion.section>
   );
