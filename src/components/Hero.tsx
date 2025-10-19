@@ -17,6 +17,10 @@ export default function Hero({ headline = 'AHKStrategies — Intelligence in Mot
       .catch(() => { if (mounted) setVideo(null); });
     return () => { mounted = false; };
   }, []);
+    // Manifesto Mode: always use Manifesto.mp4
+    useEffect(() => {
+      console.log('🎬 Manifesto Hero video active.');
+    }, []);
 
   return (
     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} style={{ position: 'relative', height: '80vh', overflow: 'hidden' }} aria-label="Hero">
@@ -25,10 +29,25 @@ export default function Hero({ headline = 'AHKStrategies — Intelligence in Mot
         <Image src="/assets/ai_visuals/hero_cinematic_bg_v1.png" alt="AHKStrategies cinematic background" fill style={{ objectFit: 'cover' }} priority />
       </div>
 
-      {/* Video fallback layer (if video available, overlay on top of image) */}
-      {video && (
-        <video src={video} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7, zIndex: 1 }} />
-      )}
+        {/* Manifesto Cinematic Intro video layer */}
+        <video
+          src="/assets/ai_videos/Manifesto.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            opacity: 0.7,
+            zIndex: 1,
+            transition: 'opacity 1s'
+          }}
+          onLoadedData={e => { e.currentTarget.style.opacity = '1'; }}
+        />
 
       {/* Gradient overlay for text readability */}
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.6))', zIndex: 2 }} />
@@ -45,3 +64,6 @@ export default function Hero({ headline = 'AHKStrategies — Intelligence in Mot
     </motion.section>
   );
 }
+
+
+

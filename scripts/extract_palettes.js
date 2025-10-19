@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 
 async function loadJimp(){
@@ -81,3 +81,5 @@ async function extractImage(imgPath){
     }
   }catch(e){ console.error('Could not apply palette to index.html', e); }
 })();
+
+

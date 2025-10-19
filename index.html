@@ -1,313 +1,105 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>AHKStrategies — Six Strategic Dimensions</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-      :root{
-        /* Dark-first brand tokens (inspired by provided imagery and palette) */
-        --bg: #06070a; /* page background */
-        --panel: rgba(255,255,255,0.03);
-        --muted: #9ca3af;
-        --accent: #60a5fa; /* Blue Ice Sheen */
-        --accent-2: #7c3aed; /* Violet neon */
-        --gold: #d4af37; /* subtle premium accent */
-        --glass: rgba(255,255,255,0.03);
-        --card-border: rgba(255,255,255,0.04);
-      }
-      html,body{height:100%}
-      body{margin:0;font-family:Poppins,Inter,system-ui,Segoe UI,Roboto;background:linear-gradient(180deg,#05060a 0%, #071026 100%);color:#e6eef8}
-      .layout{display:flex;min-height:100vh}
-      .sidebar{width:260px;padding:28px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-right:1px solid rgba(255,255,255,0.02)}
-      .brand{font-weight:700;font-size:20px}
-      .nav-item{padding:10px;border-radius:8px;color:var(--muted);cursor:pointer}
-      .nav-item.active{color:var(--accent);background:linear-gradient(90deg, rgba(96,165,250,0.05), rgba(124,58,237,0.03))}
-      .main{flex:1;padding:36px}
-      .hero{position:relative;border-radius:12px;padding:28px;background:linear-gradient(180deg, rgba(10,12,20,0.6), rgba(6,8,14,0.75));overflow:hidden;box-shadow:0 20px 60px rgba(2,6,23,0.6)}
-      .hero-grid{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center}
-      h1.title{font-size:44px;margin:0 0 10px}
-      p.lead{color:var(--muted);margin:0 0 18px}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AHKStrategies — Cosmic Intelligence</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Intro overlay -->
+  <div id="intro">
+    <h1 id="intro-text">Initializing AI Core . . .</h1>
+    <div class="intro-glow"></div>
+  </div>
 
-      .pillars{margin-top:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-      .pillar{position:relative;padding:18px;border-radius:12px;background:var(--panel);border:1px solid rgba(255,255,255,0.02);backdrop-filter: blur(6px);overflow:hidden}
-      .pillar h3{margin:0 0 8px}
-      .pillar p{color:var(--muted);margin:0}
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">AHK<span>Strategies</span></div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#mission">Mission & Vision</a>
+      <a href="#values">Our Values</a>
+      <a href="#founder">Founder</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-      .section-full{margin-top:28px;padding:22px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <canvas id="stars"></canvas>
 
-      /* large immersive section styles */
-      .immersive{position:relative;height:420px;border-radius:12px;overflow:hidden}
-      .immersive canvas{position:absolute;inset:0;width:100%;height:100%;}
-      .immersive .content{position:relative;z-index:6;padding:24px}
+    <!-- Floating cosmic scene -->
+    <div class="brain-scene">
+      <!-- mechanical brain -->
+      <svg class="brain" viewBox="0 0 200 200">
+        <defs>
+          <radialGradient id="brainGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#D4AF37" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="60" fill="url(#brainGlow)" />
+        <g stroke="#D4AF37" stroke-width="1.5">
+          <path d="M80,80 C60,60 60,140 80,120" />
+          <path d="M120,80 C140,60 140,140 120,120" />
+          <path d="M80,100 C100,80 120,120 100,100" />
+          <path d="M100,60 L100,140" />
+        </g>
+      </svg>
 
-  /* Motion helpers */
-  .fade-in-up{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.2,1)}
-  .is-visible{opacity:1;transform:none}
-  .logo-pulse{animation:logoPulse 2.6s ease-in-out infinite}
-  @keyframes logoPulse{0%{transform:scale(1)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
-  .pill-hover{transition:transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s ease}
-  .pill-click-ripple{position:absolute;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);mix-blend-mode:screen}
-  .cta{transition:transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s ease}
-  .cta:hover{transform:scale(1.03)}
-  /* neon cursor */
-  #neon-cursor{position:fixed;left:0;top:0;width:24px;height:24px;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%) scale(0.8);box-shadow:0 8px 30px rgba(96,165,250,0.14);mix-blend-mode:screen;transition:width .12s ease,height .12s ease,transform .12s ease,box-shadow .12s ease;z-index:9999}
-
-      .page-content{opacity:0;transform:translateY(6px);transition:opacity .28s ease, transform .28s ease}
-      .page-content.active-page{opacity:1;transform:none}
-
-      footer{margin-top:28px;color:var(--muted);text-align:center}
-
-      @media(max-width:1000px){
-        .layout{flex-direction:column}
-        /* move nav to top as a horizontal strip for mobile */
-        .sidebar{position:fixed;top:0;left:0;right:0;height:auto;width:100%;display:flex;gap:12px;align-items:center;padding:12px 16px;overflow-x:auto;background:linear-gradient(180deg,rgba(6,6,9,0.96),rgba(6,6,9,0.92));z-index:40;border-bottom:1px solid rgba(255,255,255,0.02)}
-        .sidebar .brand{margin-right:12px}
-        .sidebar .nav-item{white-space:nowrap;padding:8px 12px;border-radius:10px}
-        .main{padding:18px;margin-top:72px}
-        .hero-grid{grid-template-columns:1fr}
-        .pillars{grid-template-columns:repeat(2,1fr)}
-        .immersive{height:320px}
-      }
-    </style>
-  </head>
-  <body>
-    <a href="#main-content" class="sr-only">Skip to content</a>
-
-    <div class="layout">
-      <aside id="sidebar" class="sidebar" role="navigation" aria-label="Primary navigation">
-        <div class="brand">AHK<span style="color:var(--accent)">Strategies</span></div>
-        <nav style="margin-top:18px">
-          <div class="nav-item" data-page="home">Home</div>
-          <div class="nav-item" data-page="about">About</div>
-          <div class="nav-item nav-item--hub" data-page="middle-east">Middle East <span class="nav-note">Regional hub</span></div>
-          <div class="nav-item" data-page="contact">Contact</div>
-        </nav>
-        <div style="position:absolute;left:28px;bottom:20px;color:var(--muted);font-size:12px">© AHKStrategies</div>
-      </aside>
-
-      <main id="main-content" class="main" role="main">
-        <section class="hero" aria-labelledby="hero-title">
-          <div class="hero-grid">
-            <div class="left">
-              <h1 id="hero-title" class="title">The Six Strategic Dimensions</h1>
-              <p class="lead">Turn complexity into clarity — at scale. Explore our immersive pillars that fuse strategy, AI, and regional expertise into outcomes that move markets.</p>
-                <h1 id="hero-title" class="title fade-in-up">The Six Strategic Dimensions</h1>
-                <p class="lead fade-in-up">Turn complexity into clarity — at scale. Explore our immersive pillars that fuse strategy, AI, and regional expertise into outcomes that move markets.</p>
-              <div class="pillars" role="list">
-                  <article class="pillar fade-in-up" role="listitem" data-pillar="cognitive">
-                  <h3>1. Cognitive Intelligence Integration</h3>
-                  <p>We build AI systems that anticipate and adapt — turning real-time data into actionable foresight.</p>
-                </article>
-                <article class="pillar" role="listitem" data-pillar="digital">
-                  <h3>2. Human-Centered Digital Products</h3>
-                  <p>Beautiful, intuitive mobile experiences engineered to scale — from MVPs to millions of users.</p>
-                </article>
-                <article class="pillar" role="listitem" data-pillar="visioneering">
-                  <h3>3. Strategic Visioneering</h3>
-                  <p>Insight-led strategies shaped by regional intelligence and future scenarios.</p>
-                </article>
-                <article class="pillar" role="listitem" data-pillar="ecosystems">
-                  <h3>4. Unified Tech Ecosystems</h3>
-                  <p>We stitch tools into a single smart fabric — CRM, ERP, data lakes and APIs working together.</p>
-                </article>
-                <article class="pillar" role="listitem" data-pillar="mena">
-                  <h3>5. Empowering MENA’s Boldest Builders</h3>
-                  <p>Rooted in the region, built for the world: scaling SMEs with confidence and global reach.</p>
-                </article>
-                <article class="pillar" role="listitem" data-pillar="orbit">
-                  <h3>6. The Orbit Framework™</h3>
-                  <p>One core. Infinite momentum. Strategy, tech, and design orbit a mission that evolves with you.</p>
-                </article>
-              </div>
-            </div>
-
-            <div class="immersive" aria-hidden="true">
-              <canvas id="heroCanvas"></canvas>
-              <div class="content">
-                <div style="display:flex;gap:12px;align-items:center">
-                    <div style="width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#04102b" class="fade-in-up logo-pulse">6</div>
-                  <div>
-                    <div style="font-weight:700">The Orbit Framework™</div>
-                    <div style="color:var(--muted);font-size:14px">One core. Infinite momentum.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      <script src="scripts/motion_and_sound.js"></script>
-
-        <!-- Pillar detail sections (each immersive and interactive) -->
-        <section id="page-home" class="page-content active-page">
-          <h2>Overview</h2>
-          <p class="muted">Select a pillar to explore an immersive preview. Hover or click each card for motion and detail.</p>
-        </section>
-
-        <section id="page-cognitive" class="page-content" aria-labelledby="cog-h">
-          <div class="section-full">
-            <h2 id="cog-h">Cognitive Intelligence Integration</h2>
-            <p class="muted">Turn complexity into clarity — at scale. Our cognitive engines anticipate and adapt through layered ML and real-time pipelines.</p>
-            <div style="height:240px;margin-top:12px;position:relative;border-radius:10px;overflow:hidden;background:linear-gradient(90deg, rgba(96,165,250,0.03), rgba(124,58,237,0.02));">
-              <canvas class="pillar-canvas" data-for="cognitive"></canvas>
-            </div>
-          </div>
-        </section>
-
-        <section id="page-digital" class="page-content" aria-labelledby="dig-h">
-          <div class="section-full">
-            <h2 id="dig-h">Human-Centered Digital Products</h2>
-            <p class="muted">Designed for users. Engineered for impact. Real app mockups that respond to gestures and mouse input.</p>
-            <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
-              <div style="width:180px;height:320px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);display:flex;align-items:center;justify-content:center">App UI</div>
-              <div style="width:180px;height:320px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);display:flex;align-items:center;justify-content:center">App UI</div>
-            </div>
-          </div>
-        </section>
-
-        <section id="page-visioneering" class="page-content" aria-labelledby="vision-h">
-          <div class="section-full">
-            <h2 id="vision-h">Strategic Visioneering</h2>
-            <p class="muted">Insight-led strategies crafted from scenario modelling and regional intelligence.</p>
-            <div style="height:160px;margin-top:12px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent)"></div>
-          </div>
-        </section>
-
-        <section id="page-ecosystems" class="page-content" aria-labelledby="eco-h">
-          <div class="section-full">
-            <h2 id="eco-h">Unified Tech Ecosystems</h2>
-            <p class="muted">Seamless systems. Infinite synergy — hexagonal nodes link tools and create flow.</p>
-            <div style="height:180px;margin-top:12px;position:relative;border-radius:8px;overflow:hidden;background:linear-gradient(90deg, rgba(124,58,237,0.02), rgba(96,165,250,0.02));">
-              <canvas class="pillar-canvas" data-for="ecosystems"></canvas>
-            </div>
-          </div>
-        </section>
-
-        <section id="page-mena" class="page-content" aria-labelledby="mena-h">
-          <div class="section-full">
-            <h2 id="mena-h">Empowering MENA’s Boldest Builders</h2>
-            <p class="muted">Built in MENA. Built for the world — glowing nodes map regional growth and global links.</p>
-            <div style="height:200px;margin-top:12px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);"></div>
-          </div>
-        </section>
-
-        <section id="page-middle-east" class="page-content" aria-labelledby="middle-east-h">
-          <div class="section-full">
-            <h2 id="middle-east-h">Middle East — Regional Hub</h2>
-            <p class="muted">The Middle East is our strategic hub, linking mobility, energy and investment with regional depth and global connections.</p>
-            <div style="height:180px;margin-top:12px;border-radius:8px;background:linear-gradient(90deg, rgba(96,165,250,0.02), rgba(124,58,237,0.01));"></div>
-          </div>
-        </section>
-
-        <section id="page-orbit" class="page-content" aria-labelledby="orbit-h">
-          <div class="section-full">
-            <h2 id="orbit-h">The Orbit Framework™</h2>
-            <p class="muted">One core. Infinite momentum — a visual, gravitational system that ties services together around a living center.</p>
-            <div style="height:220px;margin-top:12px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);"></div>
-          </div>
-        </section>
-
-        <section id="page-about" class="page-content">
-          <h2>About AHKStrategies</h2>
-          <p class="muted">28+ years of regional expertise, building tech that scales across MENA and beyond.</p>
-        </section>
-
-        <section id="page-contact" class="page-content">
-          <h2>Contact & Connect</h2>
-          <form id="contact-form" aria-labelledby="contact-h">
-            <div><label>Name <input name="name" required /></label></div>
-            <div><label>Email <input name="email" type="email" required /></label></div>
-            <div><label>Message <textarea name="message" required></textarea></label></div>
-            <div style="margin-top:8px"><button type="submit">Send</button> <button type="button" id="form-reset">Reset</button></div>
-          </form>
-        </section>
-
-        <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center">
-          <div class="bg-gray-900 p-6 rounded-lg w-full max-w-md border border-gray-700">
-            <h4 id="modal-title">Message Sent</h4>
-            <p id="modal-desc">Thank you. We'll review your message and get back to you.</p>
-            <div class="mt-4 flex justify-end"><button id="modal-close">Close</button></div>
-          </div>
-        </div>
-
-        <footer>
-          AHKStrategies — Strategic Growth Engine
-        </footer>
-      </main>
+      <!-- AI energy hand -->
+      <svg class="ai-hand" viewBox="0 0 200 200">
+        <path d="M100 180 C80 150 60 120 80 90 C95 65 115 70 120 95 L125 140" 
+              stroke="#D4AF37" stroke-width="3" fill="none" 
+              filter="url(#glow)" stroke-linecap="round" />
+      </svg>
     </div>
 
-    <script>
-      // Routing & UI glue (kept minimal and accessible)
-      const pages = document.querySelectorAll('.page-content');
-      const navItems = document.querySelectorAll('.nav-item');
-      const pillars = document.querySelectorAll('.pillar');
-      const modal = document.getElementById('modal');
-      const modalClose = document.getElementById('modal-close');
+    <h1 class="hero-title">The Six Strategic Dimensions</h1>
+    <p class="hero-subtitle">Turn complexity into clarity — at scale. Explore our immersive pillars that fuse strategy, AI and regional expertise into outcomes that move markets.</p>
+  </section>
 
-      function hashToPage(hash){ if(!hash) return 'home'; if(hash.startsWith('#/')) return hash.slice(2); if(hash.startsWith('#')) return hash.slice(1); return hash; }
-      function setActiveNav(pageId){ navItems.forEach(item=>{ if(item.dataset.page===pageId){ item.classList.add('active'); item.setAttribute('aria-current','page') } else { item.classList.remove('active'); item.removeAttribute('aria-current') } }); }
-      function changePage(pageId, replace=false){ const target = document.getElementById('page-' + pageId) || document.getElementById('page-' + pageId.replace('/','')); if(!target) return; pages.forEach(p=>p.classList.remove('active-page')); target.classList.add('active-page'); setActiveNav(pageId); const friendly = '#/' + pageId; try{ if(replace) history.replaceState(null,'',friendly); else history.pushState(null,'',friendly); }catch(e){ window.location.hash=friendly; } const h = target.querySelector('h1,h2'); if(h){ h.setAttribute('tabindex','-1'); h.focus(); } }
+  <!-- Mission & Vision -->
+  <section id="mission">
+    <h2>Mission & Vision</h2>
+    <p>Our mission is to fuse human intelligence with AI systems to empower MENA’s future innovators.  
+       Our vision is a region leading in cognitive tech strategy and global impact.</p>
+  </section>
 
-      navItems.forEach(n=>{ n.setAttribute('role','button'); n.setAttribute('tabindex','0'); n.addEventListener('click', ()=> changePage(n.dataset.page)); n.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); n.click(); } }); });
+  <!-- Values -->
+  <section id="values">
+    <h2>Our Values</h2>
+    <ul>
+      <li>Innovation with Purpose</li>
+      <li>Integrity in Execution</li>
+      <li>Regional Empowerment</li>
+      <li>Future-Focused Design</li>
+    </ul>
+  </section>
 
-      pillars.forEach(p=>{
-        p.addEventListener('mouseenter', ()=>{ p.style.transform = 'translateY(-6px)'; p.style.transition = 'transform .24s ease'; });
-        p.addEventListener('mouseleave', ()=>{ p.style.transform = ''; });
-        p.addEventListener('click', ()=>{
-          const id = p.dataset.pillar;
-          const targetId = id === 'cognitive' ? 'cognitive' : id === 'digital' ? 'digital' : id === 'visioneering' ? 'visioneering' : id === 'ecosystems' ? 'ecosystems' : id === 'mena' ? 'mena' : 'orbit';
-          changePage(targetId);
-        });
-      });
+  <!-- Founder -->
+  <section id="founder">
+    <h2>Founder & Managing Director</h2>
+    <img src="Ashraf Kahoush Photo.png" alt="Founder Photo" class="founder-photo"/>
+    <p>Ashraf Kahoush — Founder & Managing Director. Visionary leader building AI-driven strategic frameworks across MENA and beyond.</p>
+  </section>
 
-      // form handling
-      const form = document.getElementById('contact-form');
-      const formReset = document.getElementById('form-reset');
-      if(form){ form.addEventListener('submit', async e=>{ e.preventDefault(); const data = Object.fromEntries(new FormData(form)); try{ const resp = await fetch('/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); if(!resp.ok) throw new Error('Network'); if(modal) modal.classList.remove('hidden'); form.reset(); }catch(err){ if(modal){ modal.classList.remove('hidden'); document.getElementById('modal-desc').textContent = 'Could not reach server — saved locally.' } const storage = JSON.parse(localStorage.getItem('ahk_messages')||'[]'); storage.push({ts:Date.now(),data}); localStorage.setItem('ahk_messages', JSON.stringify(storage)); } }); }
-      if(formReset && form) formReset.addEventListener('click', ()=> form.reset()); if(modalClose && modal) modalClose.addEventListener('click', ()=> modal.classList.add('hidden'));
-      window.addEventListener('keydown', e=>{ if(e.key==='Escape' && modal && !modal.classList.contains('hidden')) modal.classList.add('hidden'); });
-      window.addEventListener('popstate', ()=>{ changePage(hashToPage(location.hash), true); });
-      document.addEventListener('DOMContentLoaded', ()=>{ changePage(hashToPage(location.hash)||'home', true); });
+  <!-- Contact -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <form>
+      <input type="text" placeholder="Name" required>
+      <input type="email" placeholder="Email" required>
+      <textarea placeholder="Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
 
-      // Hero canvas background: subtle network with glowing nodes (responds to mouse)
-      (function(){
-        const canvas = document.getElementById('heroCanvas'); if(!canvas) return; const ctx = canvas.getContext('2d');
-        function resize(){ canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; }
-        window.addEventListener('resize', resize); resize();
-        let mouse = {x:canvas.width/2, y:canvas.height/2};
-        canvas.addEventListener('mousemove', e=>{ const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+  <!-- Sound Toggle -->
+  <button id="sound-toggle">🔊</button>
 
-        // helper: convert hex CSS variable to rgba string
-        function hexToRgba(hex, a){ if(!hex) return `rgba(96,165,250,${a})`; hex = hex.replace('#',''); if(hex.length===3) hex = hex.split('').map(c=>c+c).join(''); const r = parseInt(hex.substring(0,2),16); const g = parseInt(hex.substring(2,4),16); const b = parseInt(hex.substring(4,6),16); return `rgba(${r},${g},${b},${a})`; }
-        const style = getComputedStyle(document.documentElement);
-        const accent = style.getPropertyValue('--accent').trim() || '#60a5fa';
-        const accent2 = style.getPropertyValue('--accent-2').trim() || '#7c3aed';
-
-        const nodes = Array.from({length:28}, ()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4, r:Math.random()*2+1}));
-        function step(){ ctx.clearRect(0,0,canvas.width,canvas.height);
-          // draw connections
-          for(let i=0;i<nodes.length;i++){
-            const a = nodes[i];
-            for(let j=i+1;j<nodes.length;j++){ const b = nodes[j]; const dx=a.x-b.x, dy=a.y-b.y; const d = Math.hypot(dx,dy); if(d<140){ const alpha = 0.12*(1 - d/140); ctx.strokeStyle = hexToRgba(accent, alpha); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }}
-          }
-          // draw nodes
-          nodes.forEach(n=>{
-            n.x += n.vx; n.y += n.vy; n.pulse = (n.pulse||0) + 0.02; if(n.x<0||n.x>canvas.width) n.vx *= -1; if(n.y<0||n.y>canvas.height) n.vy *= -1;
-            const pr = n.r + Math.sin(n.pulse)*0.8;
-            const g = ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,pr*6);
-            g.addColorStop(0, hexToRgba(accent, 0.9));
-            g.addColorStop(0.35, hexToRgba(accent, 0.18));
-            g.addColorStop(1, hexToRgba(accent2, 0)); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(n.x,n.y, pr*3,0,Math.PI*2); ctx.fill();
-          });
-          requestAnimationFrame(step);
-        }
-        step();
-      })();
-
-      // Pillar small canvases
-      (function(){ const canvases = document.querySelectorAll('.pillar-canvas'); canvases.forEach(c=>{ const ctx=c.getContext('2d'); function resize(){ c.width=c.clientWidth; c.height=c.clientHeight; } resize(); window.addEventListener('resize', resize); let t=0; function draw(){ ctx.clearRect(0,0,c.width,c.height); t+=0.02; ctx.fillStyle='rgba(96,165,250,0.06)'; ctx.beginPath(); for(let i=0;i<6;i++){ const x = c.width/2 + Math.cos(t+i)* (c.width*0.28); const y = c.height/2 + Math.sin(t+i)* (c.height*0.18); ctx.lineTo(x,y); } ctx.closePath(); ctx.fill(); requestAnimationFrame(draw); } draw(); }); })();
-    </script>
-  </body>
+  <script src="script.js"></script>
+</body>
 </html>

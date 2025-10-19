@@ -1,0 +1,8 @@
+:root {
+  --brand-primary: #06070A;      /* Background */
+  --brand-secondary: #1E1F25;    /* Cards */
+  --accent-glow: #60A5FA;        /* Electric blue nodes */
+  --brand-gold: #D4AF37;         /* AHK accent */
+  --brand-purple: #7C3AED;       /* CTA highlight */
+  --text-light: #F9F7F6;
+}

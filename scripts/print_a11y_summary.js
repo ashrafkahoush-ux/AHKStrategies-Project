@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 
 const inPath = path.resolve(process.cwd(), 'cypress/results/a11y.json');
@@ -40,3 +40,5 @@ try{
 
   if(violations.length > 0) process.exitCode = 2;
 }catch(err){ console.error('Failed to read/parse a11y JSON', err); process.exit(1);} 
+
+

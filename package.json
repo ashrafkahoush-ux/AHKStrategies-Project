@@ -1,29 +1,36 @@
 {
   "name": "ahkstrategies-project",
   "version": "1.0.0",
-  "description": "AHKstrategies static site + server + cypress tests",
-  "main": "server.js",
+  "description": "Futuristic AI-powered website for AHKStrategies",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "start:server": "node server.js",
-    "start:detached": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/runDetached.ps1",
-    "test": "cypress run --config baseUrl=http://localhost:8080",
-  "screenshot:hero": "cypress run --spec cypress/e2e/hero_screenshot.cy.js --config baseUrl=http://localhost:8080 && node ./scripts/save_hero_artifact.js",
-  "screenshot:hero:mobile": "cypress run --spec cypress/e2e/hero_screenshot_mobile.cy.js --config baseUrl=http://localhost:8080 && node ./scripts/save_hero_artifact_mobile.js",
-    "test:open": "cypress open --config baseUrl=http://localhost:8080",
-    "e2e": "node ./scripts/e2e.js",
-    "ci": "npm ci"
+    "dev": "next dev -p 3002",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "keywords": [],
-  "author": "auto-generated",
+  "author": "Ashraf Kahoush",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.0",
+    "framer-motion": "^10.18.0",
+    "next": "^15.5.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "cypress": "^12.17.0",
-    "cypress-axe": "^1.4.0"
+    "@types/next": "^8.0.7",
+    "@types/node": "^20.19.22",
+    "@types/react": "^18.3.26",
+    "@types/react-dom": "^18.3.7",
+    "autoprefixer": "^10.4.21",
+    "eslint": "8.50.0",
+    "eslint-config-next": "14.1.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.3"
   }
 }

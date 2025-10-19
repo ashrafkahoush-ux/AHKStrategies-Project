@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 const src = path.join(__dirname, '..', 'cypress', 'screenshots', 'hero_screenshot.cy.js', 'home-hero.png');
 const dstDir = path.join(__dirname, '..', 'artifacts');
@@ -10,3 +10,5 @@ if (!fs.existsSync(src)) {
 if (!fs.existsSync(dstDir)) fs.mkdirSync(dstDir);
 fs.copyFileSync(src, dst);
 console.log('Saved artifact to', dst);
+
+

@@ -1,4 +1,4 @@
-// Lightweight motion + sound starter
+﻿// Lightweight motion + sound starter
 (function(){
   // Motion: intersection observer to reveal fade-in-up elements
   const observer = new IntersectionObserver(entries=>{
@@ -55,3 +55,5 @@
   bar.appendChild(btn); document.body.appendChild(bar);
 
 })();
+
+

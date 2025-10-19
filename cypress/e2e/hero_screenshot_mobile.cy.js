@@ -1,4 +1,4 @@
-// cypress/e2e/hero_screenshot_mobile.cy.js
+﻿// cypress/e2e/hero_screenshot_mobile.cy.js
 describe('Hero mobile screenshot', () => {
   it('captures a mobile screenshot of the homepage hero', () => {
     cy.viewport(390, 844); // typical mobile
@@ -9,3 +9,4 @@ describe('Hero mobile screenshot', () => {
     cy.get('.hero, .immersive').first().screenshot('home-hero-mobile', { overwrite: true, capture: 'viewport' });
   });
 });
+

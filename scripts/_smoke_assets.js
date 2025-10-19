@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+﻿const fs = require('fs').promises;
 const path = require('path');
 
 function sanitizeSegment(s){ return s.replace(/[^a-zA-Z0-9._-]/g,''); }
@@ -34,3 +34,5 @@ async function walkAssets(rootDir, rel=''){
   const groups = await walkAssets(publicDir,'');
   console.log(JSON.stringify({ generatedAt: new Date().toISOString(), items: groups }, null, 2));
 })();
+
+

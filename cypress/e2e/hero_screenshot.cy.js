@@ -1,4 +1,4 @@
-// cypress/e2e/hero_screenshot.cy.js
+﻿// cypress/e2e/hero_screenshot.cy.js
 describe('Hero screenshot', () => {
   it('captures a high-res screenshot of the homepage hero', () => {
     // set higher viewport for a higher-res capture
@@ -14,3 +14,4 @@ describe('Hero screenshot', () => {
     cy.get('.hero, .immersive').first().screenshot('home-hero', { overwrite: true, capture: 'viewport' });
   });
 });
+

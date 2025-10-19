@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 
 const inPath = path.resolve(process.cwd(), 'cypress/results/a11y.json');
@@ -60,3 +60,5 @@ try{
   console.error('Error generating a11y report', err);
   process.exit(1);
 }
+
+
