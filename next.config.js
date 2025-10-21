@@ -2,9 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: __dirname,
-  experimental: {
-    allowedDevOrigins: ["http://192.168.1.6:3002"],
-  },
   env: {
     NEXT_PUBLIC_DEV_SERVER: 'http://192.168.1.6:3002',
   },
