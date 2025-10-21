@@ -160,8 +160,14 @@ $rows | Export-Csv -Path $reportCsv -NoTypeInformation -Encoding UTF8
 # 10) optional git branch+commit
 try {
   if ($Execute) {
-    if (git rev-parse --is-inside-work-tree 2>&1 | Out-Null; $LASTEXITCODE -eq 0) {
-      git checkout -b "chore/repo-hygiene" 2>&1 | Out-Null
+    $isGitRepo = $false
+    try {
+      git rev-parse --is-inside-work-tree | Out-Null
+      $isGitRepo = $LASTEXITCODE -eq 0
+    } catch { $isGitRepo = $false }
+    
+    if ($isGitRepo) {
+      try { git checkout -b "chore/repo-hygiene" | Out-Null } catch { }
       git add -A
       git commit -m "chore: repo hygiene (assets unification, css dedupe, tailwind content, legacy cleanup)" | Out-Null
       Write-LogRow "GIT" "$root" "" "Committed repo hygiene changes" "committed"
