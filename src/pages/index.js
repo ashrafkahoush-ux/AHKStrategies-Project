@@ -57,6 +57,27 @@ export default function HomePage() {
         {/* Hero Section */}
         <HeroSection />
 
+        {/* Tagline Section */}
+        <section className="bg-black text-white">
+          <div className="mx-auto max-w-6xl px-6 py-16">
+            <p className="uppercase tracking-widest text-sm/6 text-white/70">
+              Where Vision Meets Human Intelligence
+            </p>
+            <h2 className="mt-2 text-3xl md:text-4xl font-semibold">
+              Deals-first strategy for builders, operators, and partners in MENA & beyond.
+            </h2>
+
+            <div className="mt-6 flex gap-3">
+              <a href="/contact" className="inline-flex items-center rounded-lg bg-white text-black px-4 py-2 font-medium">
+                Start a conversation
+              </a>
+              <a href="#pillars" className="inline-flex items-center rounded-lg border border-white/30 px-4 py-2 font-medium">
+                Explore pillars
+              </a>
+            </div>
+          </div>
+        </section>
+
         {/* Top Row - Projects Pillar */}
         <div className="flex justify-center w-full mb-16">
           {topRow.map((item) => (
