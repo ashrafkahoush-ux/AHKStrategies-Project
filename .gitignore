@@ -16,6 +16,15 @@ yarn-error.log*
 dist/
 build/
 
+# Next.js
+.next/
+.vercel/
+*.tsbuildinfo
+
+# Development artifacts
+_backup/
+artifacts/
+
 # Others
 .env
 .coverage

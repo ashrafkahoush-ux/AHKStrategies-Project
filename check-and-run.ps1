@@ -1,3 +1,4 @@
+exit
 # AHKStrategies Environment Auto‑Check & Bootstrap
 Write-Host "🔍 Starting Full Environment Check..." -ForegroundColor Cyan
 

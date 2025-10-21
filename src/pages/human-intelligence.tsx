@@ -1,35 +1,37 @@
-import Head from "next/head";
+"use client";
+import React from "react";
+import Link from "next/link";
 
 export default function HumanIntelligence() {
-    return (
-        <>
-            <Head>
-                <title>Human Intelligence — AHKStrategies</title>
-                <meta
-                    name="description"
-                    content="Human Intelligence — the Founder’s Vision behind AHKStrategies."
-                />
-            </Head>
+  return (
+    <main className="relative min-h-screen w-full overflow-hidden text-white">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0 opacity-40"
+      >
+        <source src="/assets/backgrounds/human-intelligence-base.mp4" type="video/mp4" />
+      </video>
 
-            <main className="relative min-h-screen w-full text-white overflow-hidden">
-                <video
-                    className="fixed top-0 left-0 w-full h-full object-cover -z-10"
-                    src="/assets/ai_videos/human-intelligence.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                />
-
-                <div className="relative z-10 flex flex-col items-center justify-center text-center min-h-screen px-6 backdrop-blur-[2px]">
-                    <h1 className="text-4xl md:text-6xl font-extrabold mb-4">Human Intelligence</h1>
-                    <p className="max-w-2xl text-sky-200/90 text-lg">
-                        The founder’s mind — bridging human intuition and artificial intelligence.
-                        A philosophy of leadership where clarity, vision, and empathy shape innovation.
-                    </p>
-                </div>
-            </main>
-        </>
-    );
+      <div className="relative z-10 flex flex-col items-center justify-center px-8 py-32 space-y-10 bg-black/60">
+        <h1 className="text-5xl font-bold text-indigo-300 drop-shadow-lg">
+          Human Intelligence
+        </h1>
+        <p className="max-w-4xl text-center text-indigo-100 text-lg leading-relaxed">
+          Human intelligence is not artificial — it’s authentic, intuitive, and
+          ethical. It is the heartbeat of progress, the silent architect of
+          innovation, and the compass that guides every intelligent system we
+          build.
+        </p>
+        <Link
+          href="/"
+          className="mt-10 text-indigo-200 underline hover:text-white transition"
+        >
+          ← Back to Home
+        </Link>
+      </div>
+    </main>
+  );
 }

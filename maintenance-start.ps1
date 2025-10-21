@@ -1,3 +1,4 @@
+exit
 # --- AHKStrategies Self-Healing Maintenance Start Script ---
 Write-Host "`n🧠 Starting Self-Healing Maintenance Mode..." -ForegroundColor Cyan
 

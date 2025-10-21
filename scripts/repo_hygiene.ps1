@@ -10,8 +10,8 @@ $backupDir = Join-Path $root "_backup\$timestamp"
 $reportDir = Join-Path $root "artifacts"
 $reportCsv = Join-Path $reportDir "repo_hygiene_report.csv"
 
-function Ensure-Dir($p) { if (-not (Test-Path $p)) { New-Item -ItemType Directory -Path $p | Out-Null } }
-function Log-Row([string]$Action,[string]$Path,[string]$Target,[string]$Reason,[string]$Result) {
+function Confirm-Directory($p) { if (-not (Test-Path $p)) { New-Item -ItemType Directory -Path $p | Out-Null } }
+function Write-LogRow([string]$Action,[string]$Path,[string]$Target,[string]$Reason,[string]$Result) {
   $global:rows += [pscustomobject]@{
     Action=$Action; Path=$Path; Target=$Target; Reason=$Reason; Result=$Result
   }
@@ -20,38 +20,38 @@ function Backup-File($path) {
   if (Test-Path $path) {
     $rel = Resolve-Path $path | ForEach-Object { $_.Path.Substring($root.Length).TrimStart('\') }
     $dest = Join-Path $backupDir $rel
-    Ensure-Dir (Split-Path $dest -Parent)
+    Confirm-Directory (Split-Path $dest -Parent)
     Copy-Item $path $dest -Force
   }
 }
-function Safe-Remove($path,$reason) {
+function Remove-ItemSafely($path,$reason) {
   if (Test-Path $path) {
     if ($Execute) { Backup-File $path; Remove-Item $path -Recurse -Force }
-    Log-Row "REMOVE" $path "" $reason ($(if($Execute){"removed"}else{"would-remove"}))
+    Write-LogRow "REMOVE" $path "" $reason ($(if($Execute){"removed"}else{"would-remove"}))
   }
 }
-function Safe-Move($src,$dst,$reason) {
+function Move-ItemSafely($src,$dst,$reason) {
   if (Test-Path $src) {
-    Ensure-Dir (Split-Path $dst -Parent)
+    Confirm-Directory (Split-Path $dst -Parent)
     if ($Execute) { Backup-File $src; Move-Item $src $dst -Force }
-    Log-Row "MOVE" $src $dst $reason ($(if($Execute){"moved"}else{"would-move"}))
+    Write-LogRow "MOVE" $src $dst $reason ($(if($Execute){"moved"}else{"would-move"}))
   }
 }
-function Safe-Write($path,$content,$reason) {
+function Set-ContentSafely($path,$content,$reason) {
   if ($Execute) { Backup-File $path; $content | Set-Content -Path $path -Encoding UTF8 }
-  Log-Row "WRITE" $path "" $reason ($(if($Execute){"written"}else{"would-write"}))
+  Write-LogRow "WRITE" $path "" $reason ($(if($Execute){"written"}else{"would-write"}))
 }
 
 $rows = @()
-Ensure-Dir $reportDir
-Ensure-Dir $backupDir
+Confirm-Directory $reportDir
+Confirm-Directory $backupDir
 
 # -------- standardize directories --------
 $publicAssets = Join-Path $root "public\assets"
 $publicImages = Join-Path $publicAssets "images"
 $publicVideos = Join-Path $root "public\videos"
-Ensure-Dir $publicImages
-Ensure-Dir $publicVideos
+Confirm-Directory $publicImages
+Confirm-Directory $publicVideos
 
 # 1) migrate /assets/* -> /public/assets/*
 $legacyAssets = Join-Path $root "assets"
@@ -60,11 +60,11 @@ if (Test-Path $legacyAssets) {
     if (-not $_.PSIsContainer) {
       $rel = $_.FullName.Substring($legacyAssets.Length).TrimStart('\')
       $dst = Join-Path $publicAssets $rel
-      Safe-Move $_.FullName $dst "Unify assets under /public/assets"
+      Move-ItemSafely $_.FullName $dst "Unify assets under /public/assets"
     }
   }
   # remove empty legacy folder
-  try { Safe-Remove $legacyAssets "Legacy assets folder (now empty or migrated)" } catch {}
+  try { Remove-ItemSafely $legacyAssets "Legacy assets folder (now empty or migrated)" } catch {}
 }
 
 # 2) move stray root images -> public/assets/images
@@ -73,7 +73,7 @@ $rootImages | ForEach-Object {
   $src = Join-Path $root $_
   if (Test-Path $src) {
     $dst = Join-Path $publicImages (Split-Path $src -Leaf)
-    Safe-Move $src $dst "Move root image into /public/assets/images"
+    Move-ItemSafely $src $dst "Move root image into /public/assets/images"
   }
 }
 
@@ -86,22 +86,22 @@ $expectedVideos = @(
 $expectedVideos | ForEach-Object {
   $p = Join-Path $publicVideos $_
   if (-not (Test-Path $p)) {
-    Log-Row "MISSING" $p "" "Referenced in UI; ensure file exists" "missing"
+    Write-LogRow "MISSING" $p "" "Referenced in UI; ensure file exists" "missing"
   } else {
-    Log-Row "CHECK" $p "" "Video present" "ok"
+    Write-LogRow "CHECK" $p "" "Video present" "ok"
   }
 }
 
 # 4) remove legacy HTML in root
 $legacyHtml = @("index.html","index.html.bak","served.html","served2.html","served.inspect.txt","served-head.txt")
 $legacyHtml | ForEach-Object {
-  Safe-Remove (Join-Path $root $_) "Legacy static HTML outside Next pipeline"
+  Remove-ItemSafely (Join-Path $root $_) "Legacy static HTML outside Next pipeline"
 }
 
 # 5) Tailwind: remove stray config inside src/pages
 $badTailwind = Join-Path $root "src\pages\tailwind.config.js"
 if (Test-Path $badTailwind) {
-  Safe-Remove $badTailwind "Duplicate/incorrect Tailwind config; keep root config only"
+  Remove-ItemSafely $badTailwind "Duplicate/incorrect Tailwind config; keep root config only"
 }
 
 # 6) CSS: dedupe global.css (prefer root styles\global.css)
@@ -109,13 +109,13 @@ $rootGlobal = Join-Path $root "styles\global.css"
 $srcGlobal  = Join-Path $root "src\styles\global.css"
 if ((Test-Path $rootGlobal) -and (Test-Path $srcGlobal)) {
   # Keep root; remove src version
-  Safe-Remove $srcGlobal "Duplicate global.css (keeping styles\global.css)"
+  Remove-ItemSafely $srcGlobal "Duplicate global.css (keeping styles\global.css)"
 } elseif ((-not (Test-Path $rootGlobal)) -and (Test-Path $srcGlobal)) {
   # Move src -> root
-  Safe-Move $srcGlobal $rootGlobal "Consolidate global.css at styles\"
+  Move-ItemSafely $srcGlobal $rootGlobal "Consolidate global.css at styles\"
 }
 
-# 7) unify video paths in code: /assets/videos/ -> /videos/
+# 7) unify video paths in code: /assets/videos/ -> /assets/backgrounds/
 $codeGlobs = @(
   "src\**\*.js","src\**\*.jsx","src\**\*.ts","src\**\*.tsx","**\*.mdx"
 )
@@ -126,7 +126,7 @@ foreach ($glob in $codeGlobs) {
     $text = Get-Content $_.FullName -Raw
     if ($text -like "*$pattern*") {
       $newText = $text -replace [regex]::Escape($pattern), $replacement
-      Safe-Write $_.FullName $newText "Unify video src paths to /videos/"
+      Set-ContentSafely $_.FullName $newText "Unify video src paths to /videos/"
     }
   }
 }
@@ -146,12 +146,12 @@ if (Test-Path $tailwindRoot) {
   # Replace existing content: [...] block
   $newTw = $tw -replace 'content:\s*\[[\s\S]*?\],', $desiredContent
   if ($newTw -ne $tw) {
-    Safe-Write $tailwindRoot $newTw "Expand Tailwind content globs to include all app/pages/src/components"
+    Set-ContentSafely $tailwindRoot $newTw "Expand Tailwind content globs to include all app/pages/src/components"
   } else {
-    Log-Row "CHECK" $tailwindRoot "" "Tailwind content already broad or pattern not found" "ok"
+    Write-LogRow "CHECK" $tailwindRoot "" "Tailwind content already broad or pattern not found" "ok"
   }
 } else {
-  Log-Row "WARN" $tailwindRoot "" "tailwind.config.js not found at root" "missing"
+  Write-LogRow "WARN" $tailwindRoot "" "tailwind.config.js not found at root" "missing"
 }
 
 # 9) generate CSV report
@@ -160,14 +160,14 @@ $rows | Export-Csv -Path $reportCsv -NoTypeInformation -Encoding UTF8
 # 10) optional git branch+commit
 try {
   if ($Execute) {
-    if (git rev-parse --is-inside-work-tree 2>$null) {
-      git checkout -b "chore/repo-hygiene" 2>$null | Out-Null
+    if (git rev-parse --is-inside-work-tree 2>&1 | Out-Null; $LASTEXITCODE -eq 0) {
+      git checkout -b "chore/repo-hygiene" 2>&1 | Out-Null
       git add -A
       git commit -m "chore: repo hygiene (assets unification, css dedupe, tailwind content, legacy cleanup)" | Out-Null
-      Log-Row "GIT" "$root" "" "Committed repo hygiene changes" "committed"
+      Write-LogRow "GIT" "$root" "" "Committed repo hygiene changes" "committed"
     }
   }
-} catch { Log-Row "GIT" "$root" "" "Git commit failed: $($_.Exception.Message)" "skipped" }
+} catch { Write-LogRow "GIT" "$root" "" "Git commit failed: $($_.Exception.Message)" "skipped" }
 
 Write-Host "============================================"
 Write-Host " Repo Hygiene Completed: " $(if($Execute){"EXECUTED"}else{"DRY-RUN"})

@@ -1,3 +1,4 @@
+exit
 # --- AHKStrategies Maintenance Stop Script ---
 Write-Host "`n🧹 Stopping Maintenance Mode..." -ForegroundColor Yellow
 
