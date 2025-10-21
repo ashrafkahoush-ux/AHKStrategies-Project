@@ -19,6 +19,7 @@ export default function HomePage() {
     { title: "People", video: "/assets/backgrounds/people-bg.mp4", href: "/people" },
     { title: "Innovation", video: "/assets/backgrounds/innovation-bg.mp4", href: "/innovation" },
     { title: "Vision", video: "/assets/backgrounds/vision-bg.mp4", href: "/vision" },
+    { title: "Human Intelligence", video: "/assets/backgrounds/human-intelligence-bg.mp4", href: "/human-intelligence" },
   ];
 
   return (
