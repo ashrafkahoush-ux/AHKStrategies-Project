@@ -162,14 +162,14 @@ try {
   if ($Execute) {
     $isGitRepo = $false
     try {
-      git rev-parse --is-inside-work-tree | Out-Null
+      $null = git rev-parse --is-inside-work-tree 2>&1
       $isGitRepo = $LASTEXITCODE -eq 0
     } catch { $isGitRepo = $false }
     
     if ($isGitRepo) {
-      try { git checkout -b "chore/repo-hygiene" | Out-Null } catch { }
+      try { $null = git checkout -b "chore/repo-hygiene" 2>&1 } catch { }
       git add -A
-      git commit -m "chore: repo hygiene (assets unification, css dedupe, tailwind content, legacy cleanup)" | Out-Null
+      $null = git commit -m "chore: repo hygiene (assets unification, css dedupe, tailwind content, legacy cleanup)" 2>&1
       Write-LogRow "GIT" "$root" "" "Committed repo hygiene changes" "committed"
     }
   }
