@@ -3,6 +3,7 @@
 import Link from "next/link";
 import ParticleBG from "../components/ParticleBG";
 import Footer from "../components/Footer";
+import HeroSection from "../components/HeroSection";
 
 export default function HomePage() {
   const topRow = [
@@ -51,6 +52,9 @@ export default function HomePage() {
             Vision Pillars
           </h2>
         </header>
+
+        {/* Hero Section */}
+        <HeroSection />
 
         {/* Top Row - Projects Pillar */}
         <div className="flex justify-center w-full mb-16">
