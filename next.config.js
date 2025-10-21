@@ -1,8 +1,8 @@
 ﻿/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    allowedDevOrigins: ['http://localhost:3002', 'http://192.168.1.6:3002'],
+  env: {
+    NEXT_PUBLIC_DEV_SERVER: 'http://192.168.1.6:3002',
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {

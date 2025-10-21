@@ -27,10 +27,10 @@ body {
     padding: 0;
     color: var(--fg);
     background-color: var(--bg);
-    background-image: radial-gradient(#223357 1px, transparent 1px), url('/assets/images/background/starry_bg.png');
-    background-size: 50px 50px, cover;
-    background-repeat: repeat, no-repeat;
-    background-attachment: fixed, fixed;
+    background-image: radial-gradient(#223357 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-repeat: repeat;
+    background-attachment: fixed;
     font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
     line-height: 1.6;
 }

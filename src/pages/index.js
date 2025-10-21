@@ -8,16 +8,16 @@ export default function HomePage() {
   const topRow = [
     {
       title: "Projects & Business Opportunities",
-      video: "/videos/projects-opportunities.mp4",
+      video: "/assets/backgrounds/projects-bg.mp4",
       href: "/projects",
     },
   ];
 
   const bottomRow = [
-    { title: "Legacy", video: "/videos/legacy.mp4", href: "/legacy" },
-    { title: "People", video: "/videos/people.mp4", href: "/people" },
-    { title: "Innovation", video: "/videos/innovation.mp4", href: "/innovation" },
-    { title: "Vision", video: "/videos/vision.mp4", href: "/vision" },
+    { title: "Legacy", video: "/assets/backgrounds/legacy-bg.mp4", href: "/legacy" },
+    { title: "People", video: "/assets/backgrounds/people-bg.mp4", href: "/people" },
+    { title: "Innovation", video: "/assets/backgrounds/innovation-bg.mp4", href: "/innovation" },
+    { title: "Vision", video: "/assets/backgrounds/vision-bg.mp4", href: "/vision" },
   ];
 
   return (
@@ -31,7 +31,7 @@ export default function HomePage() {
           playsInline
           className="h-full w-full object-cover opacity-30"
         >
-          <source src="/videos/background.mp4" type="video/mp4" />
+          <source src="/assets/backgrounds/hero-cinematic-bg.mp4" type="video/mp4" />
         </video>
       </div>
 
