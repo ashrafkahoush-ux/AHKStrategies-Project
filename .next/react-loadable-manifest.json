@@ -10,5 +10,11 @@
     "files": [
       "static/chunks/_pages-dir-browser_node_modules_next_dist_pages__error_js.js"
     ]
+  },
+  "components\\ParticleBG.jsx -> react-tsparticles": {
+    "id": "components\\ParticleBG.jsx -> react-tsparticles",
+    "files": [
+      "static/chunks/_pages-dir-browser_node_modules_react-tsparticles_esm_index_js.js"
+    ]
   }
 }
