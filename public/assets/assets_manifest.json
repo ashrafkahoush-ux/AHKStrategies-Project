@@ -1,0 +1,22 @@
+{
+  "videos": {
+    "hero": "hero_hand_to_logo_v1.mp4",
+    "background": "background-o3.mp4",
+    "robot_hand": "robot-hand.mp4",
+    "innovation": "innovation.mp4",
+    "vision": "vision.mp4",
+    "people": "people.mp4",
+    "legacy": "legacy.mp4",
+    "projects": "projects.mp4",
+    "human_intelligence": "human-intelligence.mp4"
+  },
+  "images": {
+    "background": "background.png",
+    "innovation": "innovation.png",
+    "vision": "vision.png",
+    "people": "people.png",
+    "legacy": "legacy.png",
+    "projects": "projects.png",
+    "human_intelligence": "human-intelligence.png"
+  }
+}
