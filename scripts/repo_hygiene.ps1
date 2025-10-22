@@ -164,16 +164,23 @@ try {
     try {
       $null = git rev-parse --is-inside-work-tree 2>&1
       $isGitRepo = $LASTEXITCODE -eq 0
-    } catch { $isGitRepo = $false }
-    
+    } catch {
+      $isGitRepo = $false
+    }
+
     if ($isGitRepo) {
-      try { $null = git checkout -b "chore/repo-hygiene" 2>&1 } catch { }
+      try {
+        $null = git checkout -b "chore/repo-hygiene" 2>&1
+      } catch {
+      }
       git add -A
       $null = git commit -m "chore: repo hygiene (assets unification, css dedupe, tailwind content, legacy cleanup)" 2>&1
       Write-LogRow "GIT" "$root" "" "Committed repo hygiene changes" "committed"
     }
   }
-} catch { Write-LogRow "GIT" "$root" "" "Git commit failed: $($_.Exception.Message)" "skipped" }
+} catch {
+  Write-LogRow "GIT" "$root" "" "Git commit failed: $($_.Exception.Message)" "skipped"
+}
 
 Write-Host "============================================"
 Write-Host " Repo Hygiene Completed: " $(if($Execute){"EXECUTED"}else{"DRY-RUN"})
