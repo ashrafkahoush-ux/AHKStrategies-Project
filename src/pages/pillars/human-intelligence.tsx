@@ -6,7 +6,7 @@ export default function HumanIntelligencePage() {
     <main className="min-h-screen bg-white">
       <section className="relative w-full h-[38rem] overflow-hidden">
         <Image
-          src="/assets/images/pillars/human-intelligence.jpg"
+          src="/assets/ai_images/pillars/human-intelligence.jpg"
           alt="Human Intelligence"
           fill
           priority
